@@ -29,3 +29,5 @@
 ## 設計書
 
 - [ユースケース](usecase.md)
+- [スキーマ](schemas.md)
+- [機能仕様](functions.md)
