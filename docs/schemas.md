@@ -11,6 +11,9 @@
 | id<a id="id"></a> | string | データを一意に判別する文字列。<br />[shortid](https://www.npmjs.com/package/shortid)ライブラリで生成することを想定する。 |
 | system            | object | データの共通で持つ情報。下記を参照。                                                                                     |
 
+> 日付型 について
+> JSON には日付型がないため、ISO 8601 形式(UTC)の文字列とする。
+
 ### system <a id="system"></a>
 
 | item name      | type   | description                  |
@@ -29,11 +32,32 @@
 | description | string            | 施設の説明。改行を含むこともある。1024 文字まで                   |
 | system      | [system](#system) | 共通情報                                                          |
 
-## 予約
+## 予約 <a id="reservation"></a>
 
-| item name  | type      | description                                                         |
-| ---------- | --------- | ------------------------------------------------------------------- |
-| id         | [id](#id) | 予約を一意に判別する ID。保存時に生成するため、新規作成時には不要。 |
-| subject    | string    | 予約件名                                                            |
-| facilityId | id        | 対象の施設の ID                                                     |
-| system     | system    | [共通情報](#system)                                                 |
+| item name   | type      | description                                                         |
+| ----------- | --------- | ------------------------------------------------------------------- |
+| id          | [id](#id) | 予約を一意に判別する ID。保存時に生成するため、新規作成時には不要。 |
+| subject     | string    | 予約件名 128 文字まで                                               |
+| facilityId  | id        | 対象の施設の ID                                                     |
+| description | string    | 予約の詳細な説明 1024 文字まで                                      |
+| startDate   | date      | 利用開始日時                                                        |
+| endDate     | date      | 利用終了日時                                                        |
+| system      | system    | [共通情報](#system)                                                 |
+
+## エラーレスポンス
+
+| item name | type    | description      |
+| --------- | ------- | ---------------- |
+| code      | string  | エラーコード     |
+| message   | string  | エラーメッセージ |
+| errors    | Error[] | エラーの一覧     |
+
+## バリデーション・エラー(ValidationError)
+
+※ Error オブジェクトから継承される
+
+| item name | type   | description              |
+| --------- | ------ | ------------------------ |
+| itemName  | string | エラー対象の項目名       |
+| code      | string | エラーの内容を表すコード |
+| message   | string | エラーのメッセージ       |
