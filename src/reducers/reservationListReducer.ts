@@ -1,9 +1,9 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import ITaskListPage from '../status/ITaskListPage';
+import ITaskListPage from '../status/IReservationListPage';
 
 const init: ITaskListPage = {
   loading: false,
-  taskList: [],
+  reservationList: [],
 };
 
 const taskListReducer = reducerWithInitialState<ITaskListPage>(init).build();

@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
-import ITask from '../status/ITask';
-import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import IReservation from '../status/IReservation';
 
 const Container = styled.div`
   border-bottom: 1px solid #ccc;
@@ -24,19 +24,14 @@ const CheckCircle = styled.div<{ complete: boolean }>`
   color: #ffffff;
 `;
 
-const TaskListItem: React.FC<ITask> = props => {
+const TaskListItem: React.FC<IReservation> = props => {
   const dispatch = useDispatch();
   const onClickRow = useCallback(() => {
     dispatch(push(`task/${props.id}`));
   }, [props.id]);
   return (
     <Container onClick={onClickRow}>
-      <CheckCircle complete={props.complete}>
-        {props.complete ? '✔' : ''}
-      </CheckCircle>
-      <div>{props.name}</div>
-      <div>{props.details}</div>
-      <div>期限: {props.period?.toDateString()}</div>
+      <span>{props.subject}</span>
     </Container>
   );
 };

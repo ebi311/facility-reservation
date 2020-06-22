@@ -8,7 +8,7 @@ module.exports = merge(common, {
   // watch: true,
   devtool: 'source-map',
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'src'),
     publicPath: '/',
     watchContentBase: true,
     historyApiFallback: true,
