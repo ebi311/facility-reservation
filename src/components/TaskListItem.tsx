@@ -13,17 +13,6 @@ const Container = styled.div`
   }
 `;
 
-const CheckCircle = styled.div<{ complete: boolean }>`
-  border-radius: 50%;
-  border: 1px solid #999;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  font-size: 24px;
-  background-color: ${p => (p.complete ? '#33aa66' : '#ffffff')};
-  color: #ffffff;
-`;
-
 const TaskListItem: React.FC<IReservation> = props => {
   const dispatch = useDispatch();
   const onClickRow = useCallback(() => {

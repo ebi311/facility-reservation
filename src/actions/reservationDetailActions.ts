@@ -4,13 +4,18 @@ import IReservation from '../status/IReservation';
 
 const actionCreator = actionCreatorFactory('reservation-detail');
 
-export const loadReservationAction = actionCreator.async<{}, IReservation, {}>(
-  'load-reservation',
-);
+export const loadReservationAction = actionCreator.async<
+  null,
+  IReservation,
+  null
+>('load-reservation');
 
-export const loadTask = async (id: string, dispatch: Dispatch) => {
+export const loadTask = async (
+  id: string,
+  dispatch: Dispatch,
+): Promise<void> => {
   // 読み込みの開始
-  dispatch(loadReservationAction.started({}));
+  dispatch(loadReservationAction.started(null));
   // 非同期での読み込み
   // setTimeout でシミュレート
   setTimeout(() => {
@@ -28,6 +33,6 @@ export const loadTask = async (id: string, dispatch: Dispatch) => {
         latUpdateUser: '',
       },
     };
-    dispatch(loadReservationAction.done({ params: {}, result: task }));
+    dispatch(loadReservationAction.done({ params: null, result: task }));
   }, 1000);
 };

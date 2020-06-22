@@ -17,7 +17,7 @@ const init: IReservationPage = {
 };
 
 const reservationDetailReducer = reducerWithInitialState<IReservationPage>(init)
-  .case(loadReservationAction.started, (state, payload) => ({
+  .case(loadReservationAction.started, (state, _payload) => ({
     ...state,
     loading: true,
   }))

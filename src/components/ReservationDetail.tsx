@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo } from 'react';
-import { useSelector, useDispatch, useStore } from 'react-redux';
-import IState from '../status/IState';
-import IReservationDetailPage from '../status/IReservationDetailPage';
+import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { loadTask } from '../actions/reservationDetailActions';
+import IReservationDetailPage from '../status/IReservationDetailPage';
+import IState from '../status/IState';
 
-type Props = RouteComponentProps<{ id: string }>;
+type PropsType = RouteComponentProps<{ id: string }>;
 
-const ReservationDetail: React.FC<Props> = props => {
+const ReservationDetail: React.FC<PropsType> = props => {
   const taskPage = useSelector<IState, IReservationDetailPage>(
     s => s.reservation,
   );

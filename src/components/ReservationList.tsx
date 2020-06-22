@@ -4,7 +4,7 @@ import IState from '../status/IState';
 
 const ReservationList: React.FC = () => {
   const reservationList = useSelector<IState>(s => s.reservationList);
-
+  console.log(reservationList);
   return (
     <>
       <div>Reservation List Page</div>

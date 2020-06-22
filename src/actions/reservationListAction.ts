@@ -4,9 +4,11 @@ import IReservation from '../status/IReservation';
 
 const actionCreator = actionCreatorFactory('task-list');
 
-export const loadTaskListAction = actionCreator.async<{}, IReservation[], {}>(
-  'load-task-list',
-);
+export const loadTaskListAction = actionCreator.async<
+  unknown,
+  IReservation[],
+  unknown
+>('load-task-list');
 
 const dummyData: IReservation[] = [
   {
@@ -38,7 +40,8 @@ const dummyData: IReservation[] = [
     },
   },
 ];
-export const loadTaskList = async (dispatch: Dispatch) => {
+export const loadTaskList = async (dispatch: Dispatch): Promise<void> => {
+  console.log(dispatch);
   loadTaskListAction.started({});
   // setTimeout で読み込みをシミュレート
   setTimeout(() => {

@@ -24,8 +24,31 @@ rules:
   valid-jsdoc: 0
   react/prop-types: off
   '@typescript-eslint/explicit-function-return-type': off
-  '@typescript-eslint/interface-name-prefix':
+  '@typescript-eslint/no-unused-vars':
     - error
-    - prefixWithI: 'always'
+    - argsIgnorePattern: '^_'
+  '@typescript-eslint/naming-convention':
+    - warn
+    - selector: default
+      format:
+        - camelCase
+        - PascalCase
+    - selector: parameter
+      format:
+        - camelCase
+      leadingUnderscore: allow
+    - selector: class
+      format:
+        - PascalCase
+    - selector: typeAlias
+      format:
+        - PascalCase
+      suffix:
+        - Type
+    - selector: interface
+      format:
+        - PascalCase
+      prefix:
+        - I
   prettier/prettier:
     - error
