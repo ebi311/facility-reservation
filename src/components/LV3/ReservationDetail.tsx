@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { loadTask } from '../actions/reservationDetailActions';
-import IReservationDetailPage from '../status/IReservationDetailPage';
-import IState from '../status/IState';
+import { loadTask } from '../../actions/reservationDetailActions';
+import IReservationDetailPage from '../../status/IReservationDetailPage';
+import IState from '../../status/IState';
 
 type PropsType = RouteComponentProps<{ id: string }>;
 

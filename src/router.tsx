@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router';
-import ReservationDetail from './components/ReservationDetail';
-import ReservationList from './components/reservationList';
+import ReservationDetail from './components/LV3/ReservationDetail';
+import ReservationList from './components/LV3/ReservationList';
 
 const Router: React.FC = () => {
   return (
