@@ -1,11 +1,15 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { loadReservationList } from '../../actions/reservationListAction';
+import {
+  loadFacilityList,
+  loadReservationList,
+} from '../../actions/reservationListAction';
 import ITaskListPage from '../../status/IReservationListPage';
 import IState from '../../status/IState';
-import DayHeader from '../LV2/DayHeader';
 import Actions from '../LV2/Actions';
+import DayHeader from '../LV2/DayHeader';
+import FacilityLane from '../LV2/FacilityLane';
 import TimeLaneHeader from '../LV2/TimeLaneHeader';
 
 const Container = styled.div`
@@ -17,7 +21,6 @@ const Container = styled.div`
 const ListRow = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100vw;
   box-sizing: border-box;
 `;
 
@@ -30,12 +33,20 @@ const ReservationList: React.FC = () => {
   const state = useSelector<IState, ITaskListPage>(s => s.reservationList);
   useEffect(() => {
     loadReservationList(new Date(), dispatch);
+    loadFacilityList(dispatch);
   }, []);
   const list = useMemo(() => {
-    return state.reservationList.map(reservation => (
-      <div key={reservation.id}>{reservation.subject}</div>
+    return state.facilities.map(facility => (
+      <FacilityLane
+        date={state.date}
+        key={facility.id}
+        facility={facility}
+        reservations={state.reservationList}
+      >
+        {facility.name}
+      </FacilityLane>
     ));
-  }, [state.reservationList]);
+  }, [state.facilities, state.reservationList]);
   return (
     <Container>
       <div>Reservation List Page</div>

@@ -6,7 +6,7 @@ import {
 } from '../actions/reservationListAction';
 
 const init: ITaskListPage = {
-  date: new Date(),
+  date: new Date('2020-08-01T00:00:00'),
   facilities: [],
   loading: false,
   reservationList: [],

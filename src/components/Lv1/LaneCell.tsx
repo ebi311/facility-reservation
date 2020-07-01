@@ -1,22 +1,28 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import { constraints } from '../../constraints';
 
 type PropsType = {
-  text?: string;
+  backgroundColor?: string;
+  className?: string;
   color?: string;
+  text?: string;
   width?: string;
 };
 
 const Cell = styled.div<PropsType>`
+  background-color: ${p => p.backgroundColor || 'white'};
   border: 1px solid #666;
-  background-color: ${p => p.color || 'white'};
-  text-align: center;
-  height: 3em;
-  margin-right: -1px;
+  box-sizing: border-box;
+  color: ${p => p.color || 'inherit'};
   flex-basis: ${p => (p.width ? 'auto' : '0')};
-  flex-shrink: 0;
-  width: ${p => p.width || 'auto'};
   flex-grow: ${p => (p.width ? '0' : '1')};
+  flex-shrink: 0;
+  height: ${constraints.rowHeight};
+  overflow: visible;
+  position: relative;
+  text-align: center;
+  width: ${p => p.width || 'auto'};
 `;
 
 const LaneCell: React.FC<PropsType> = props => {

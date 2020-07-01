@@ -7,7 +7,7 @@ const dummyData: IReservation[] = [
     description: '',
     startDate: new Date('2020-08-01T01:00:00Z'),
     endDate: new Date('2020-08-01T02:00:00Z'),
-    facilityId: '001',
+    facilityId: 'f-001',
     system: {
       createDate: new Date(),
       createUser: '',
@@ -19,9 +19,9 @@ const dummyData: IReservation[] = [
     id: '002',
     subject: 'reservation-2',
     description: '',
-    startDate: new Date('2020-08-01T04:00:00Z'),
+    startDate: new Date('2020-08-01T03:30:00Z'),
     endDate: new Date('2020-08-01T04:30:00Z'),
-    facilityId: '002',
+    facilityId: 'f-002',
     system: {
       createDate: new Date(),
       createUser: '',
