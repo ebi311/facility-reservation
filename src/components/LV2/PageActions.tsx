@@ -11,7 +11,7 @@ type PropsType = {
   className?: string;
 };
 
-const ActionsRow: React.FC<PropsType> = props => {
+const PageActions: React.FC<PropsType> = props => {
   return (
     <Row className={props.className}>
       <Button variant="contained" color="primary">
@@ -21,4 +21,4 @@ const ActionsRow: React.FC<PropsType> = props => {
   );
 };
 
-export default ActionsRow;
+export default PageActions;

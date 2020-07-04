@@ -10,7 +10,7 @@ export const loadReservationAction = actionCreator.async<
   null
 >('load-reservation');
 
-export const loadTask = async (
+export const loadReservation = async (
   id: string,
   dispatch: Dispatch,
 ): Promise<void> => {

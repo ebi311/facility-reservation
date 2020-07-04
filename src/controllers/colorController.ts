@@ -11,10 +11,12 @@ const colors = [
 
 let index = 0;
 
-const pickColor = (): string => {
+export const pickColor = (): string => {
   const mod = index % colors.length;
   index++;
   return colors[mod];
 };
 
-export default pickColor;
+export const resetColor = (): void => {
+  index = 0;
+};

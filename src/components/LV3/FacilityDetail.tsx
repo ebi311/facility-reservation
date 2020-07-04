@@ -4,12 +4,12 @@ import ReactLoading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import styled from 'styled-components';
-import { loadReservation } from '../../actions/reservationDetailActions';
-import IReservationPage from '../../status/IReservationDetailPage';
+import { loadFacility } from '../../actions/facilityActions';
+import IFacilityPage from '../../status/IFacilityPage';
 import IState from '../../status/IState';
 import ActionBar from '../LV2/ActionBar';
+import FacilityForm from '../LV2/FacilityForm';
 import FormHeader from '../LV2/FormHeader';
-import ReservationForm from '../LV2/ReservationForm';
 
 type PropsType = RouteComponentProps<{ id: string }>;
 
@@ -17,13 +17,13 @@ const Loading = styled(ReactLoading)`
   margin: auto auto;
 `;
 
-const ReservationDetail: React.FC<PropsType> = props => {
-  const storeState = useSelector<IState, IReservationPage>(s => s.reservation);
-  const { reservation, loading, facilityList } = storeState;
+const FacilityDetail: React.FC<PropsType> = props => {
+  const storeState = useSelector<IState, IFacilityPage>(s => s.facility);
+  const { facility, loading } = storeState;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadReservation(props.match.params.id, dispatch);
+    loadFacility(props.match.params.id, dispatch);
   }, []);
 
   const onSave = useCallback(() => {
@@ -37,16 +37,14 @@ const ReservationDetail: React.FC<PropsType> = props => {
   const onClose = useCallback(() => {
     props.history.goBack();
   }, []);
-
   const form = useMemo(
     () => (
       <form>
-        <ReservationForm reservation={reservation} facilities={facilityList} />
+        <FacilityForm facility={facility} />
       </form>
     ),
-    [reservation, facilityList],
+    [facility],
   );
-
   return (
     <Container maxWidth="sm">
       <FormHeader onCloseClick={onClose} />
@@ -56,4 +54,4 @@ const ReservationDetail: React.FC<PropsType> = props => {
   );
 };
 
-export default ReservationDetail;
+export default FacilityDetail;

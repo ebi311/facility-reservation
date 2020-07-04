@@ -1,6 +1,6 @@
 import IFacility from '../status/IFacility';
 
-const dummyData: IFacility[] = [
+export const dummyData: IFacility[] = [
   {
     description: '',
     id: 'f001',
@@ -25,11 +25,20 @@ const dummyData: IFacility[] = [
   },
 ];
 
-export const loadFacilities = (): Promise<IFacility[]> => {
+export const getFacilities = (): Promise<IFacility[]> => {
   // シミュレート
   return new Promise((resolve, _reject) => {
     setTimeout(() => {
       resolve(dummyData);
+    }, 1000);
+  });
+};
+
+export const getFacility = (id: string): Promise<IFacility> => {
+  return new Promise((resolve, _reject) => {
+    const facility = dummyData.find(data => data.id === id);
+    setTimeout(() => {
+      resolve(facility);
     }, 1000);
   });
 };

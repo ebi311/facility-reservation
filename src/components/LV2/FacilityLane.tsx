@@ -1,13 +1,13 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import moment from 'moment';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import ResizeObserver from 'resize-observer-polyfill';
 import styled from 'styled-components';
 import { constraints } from '../../constraints';
-import pickColor from '../../controllers/colorController';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
 import LaneCell from '../Lv1/LaneCell';
 import ReservationBar from './ReservationBar';
-import moment from 'moment';
-import ResizeObserver from 'resize-observer-polyfill';
 
 const Row = styled.div`
   display: flex;
@@ -20,9 +20,16 @@ type PropsType = {
   date: Date;
   facility: IFacility;
   reservations: IReservation[];
+  color: string;
 };
 
-const createCells = (facility: IFacility, color: string) => {
+const FacilityLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+`;
+
+const Cells: React.FC<{ facility: IFacility; color: string }> = props => {
+  const { facility, color } = props;
   const cells = [
     <LaneCell
       width={constraints.rowHeaderWidth + 'px'}
@@ -30,7 +37,11 @@ const createCells = (facility: IFacility, color: string) => {
       backgroundColor={color}
       color="white"
     >
-      <p>{facility.name}</p>
+      <p>
+        <FacilityLink to={`facilities/${facility.id}`}>
+          {facility.name}
+        </FacilityLink>
+      </p>
     </LaneCell>,
   ];
   for (let i = 8; i < 19; i++) {
@@ -41,22 +52,21 @@ const createCells = (facility: IFacility, color: string) => {
       ></LaneCell>,
     );
   }
-  return cells;
+  return <>{cells}</>;
 };
 
 const createReservationRows = (
-  element: HTMLDivElement,
+  element: HTMLDivElement | undefined,
   props: PropsType,
-  color: string,
 ) => {
   const beginDate = moment(props.date).hour(8).startOf('hour').toDate();
-  const cellWidth = (element.querySelector('.first') as HTMLElement)
-    .offsetWidth;
+  const cellWidth = (element?.querySelector('.first') as HTMLElement)
+    ?.offsetWidth;
   if (!cellWidth) return [];
   const bars = props.reservations.map(r => (
     <ReservationBar
       key={r.id}
-      color={color}
+      color={props.color}
       beginTime={beginDate}
       reservation={r}
       timeWidth={cellWidth}
@@ -66,10 +76,6 @@ const createReservationRows = (
 };
 
 const FacilityLane: React.FC<PropsType> = props => {
-  const color = pickColor();
-  const cells = useMemo(() => {
-    return createCells(props.facility, color);
-  }, [props.facility]);
   const [reserveBars, setReserveBars] = useState<JSX.Element[]>([]);
   const ro = useMemo(() => {
     return new ResizeObserver((entries, _observer) => {
@@ -77,21 +83,29 @@ const FacilityLane: React.FC<PropsType> = props => {
         const bars = createReservationRows(
           entry.target as HTMLDivElement,
           props,
-          color,
         );
         setReserveBars(bars);
       });
     });
   }, []);
   const rowRef = useCallback((ref: HTMLDivElement) => {
-    const bars = createReservationRows(ref, props, color);
+    if (!ref) {
+      ro.disconnect();
+      return;
+    }
+    const bars = createReservationRows(ref, props);
     ro.observe(ref);
     setReserveBars(bars);
+  }, []);
+  useEffect(() => {
+    return () => {
+      ro.disconnect();
+    };
   }, []);
 
   return (
     <Row ref={rowRef}>
-      {cells}
+      <Cells color={props.color} facility={props.facility} />
       {reserveBars}
     </Row>
   );

@@ -1,9 +1,9 @@
 import { Dispatch } from 'redux';
 import actionCreatorFactory from 'typescript-fsa';
-import { loadReservations } from '../controllers/reservationController';
+import { getReservations } from '../controllers/reservationController';
 import IFacility from '../status/IFacility';
 import IReservation from '../status/IReservation';
-import { loadFacilities } from '../controllers/facilityController';
+import { getFacilities } from '../controllers/facilityController';
 
 const actionCreator = actionCreatorFactory('task-list');
 
@@ -24,7 +24,7 @@ export const loadReservationList = async (
   dispatch: Dispatch,
 ): Promise<void> => {
   dispatch(loadTaskListAction.started({}));
-  const data = await loadReservations(date);
+  const data = await getReservations(date);
   const action = loadTaskListAction.done({
     result: data,
     params: {},
@@ -34,6 +34,6 @@ export const loadReservationList = async (
 
 export const loadFacilityList = async (dispatch: Dispatch): Promise<void> => {
   dispatch(loadFacilityAction.started({}));
-  const facilities = await loadFacilities();
+  const facilities = await getFacilities();
   dispatch(loadFacilityAction.done({ result: facilities, params: {} }));
 };

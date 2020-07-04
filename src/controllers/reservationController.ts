@@ -31,7 +31,7 @@ const dummyData: IReservation[] = [
   },
 ];
 
-export const loadReservations = (_date: Date): Promise<IReservation[]> => {
+export const getReservations = (_date: Date): Promise<IReservation[]> => {
   // setTimeout で読み込みをシミュレート
   return new Promise((resolve, _reject) => {
     setTimeout(() => {

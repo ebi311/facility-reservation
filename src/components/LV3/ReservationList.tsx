@@ -5,9 +5,10 @@ import {
   loadFacilityList,
   loadReservationList,
 } from '../../actions/reservationListAction';
+import { resetColor, pickColor } from '../../controllers/colorController';
 import ITaskListPage from '../../status/IReservationListPage';
 import IState from '../../status/IState';
-import Actions from '../LV2/Actions';
+import Actions from '../LV2/PageActions';
 import DayHeader from '../LV2/DayHeader';
 import FacilityLane from '../LV2/FacilityLane';
 import TimeLaneHeader from '../LV2/TimeLaneHeader';
@@ -31,22 +32,27 @@ const ActionsRow = styled(Actions)`
 const ReservationList: React.FC = () => {
   const dispatch = useDispatch();
   const state = useSelector<IState, ITaskListPage>(s => s.reservationList);
+
   useEffect(() => {
     loadReservationList(new Date(), dispatch);
     loadFacilityList(dispatch);
   }, []);
+
   const list = useMemo(() => {
+    resetColor();
     return state.facilities.map(facility => (
       <FacilityLane
         date={state.date}
         key={facility.id}
         facility={facility}
         reservations={state.reservationList}
+        color={pickColor()}
       >
         {facility.name}
       </FacilityLane>
     ));
   }, [state.facilities, state.reservationList]);
+
   return (
     <Container>
       <div>Reservation List Page</div>
