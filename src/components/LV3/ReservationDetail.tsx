@@ -1,8 +1,8 @@
-import { Container } from '@material-ui/core';
+import { Container as ContainerOriginal } from '@material-ui/core';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactLoading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, useHistory } from 'react-router';
 import styled from 'styled-components';
 import { loadReservation } from '../../actions/reservationDetailActions';
 import IReservationPage from '../../status/IReservationDetailPage';
@@ -16,6 +16,13 @@ const Loading = styled(ReactLoading)`
   margin: auto auto;
 `;
 
+const Container = styled(ContainerOriginal)`
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
+  padding: 1em;
+`;
+
 const ReservationDetail: React.FC<PropsType> = props => {
   const storeState = useSelector<IState, IReservationPage>(s => s.reservation);
   const { reservation, loading, facilityList } = storeState;
@@ -25,9 +32,8 @@ const ReservationDetail: React.FC<PropsType> = props => {
     loadReservation(props.match.params.id, dispatch);
   }, []);
 
-  const onClose = useCallback(() => {
-    props.history.goBack();
-  }, []);
+  const history = useHistory();
+  const onClose = useCallback(() => history.push('/'), []);
 
   const form = useMemo(
     () => (

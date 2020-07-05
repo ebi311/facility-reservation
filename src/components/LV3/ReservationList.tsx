@@ -14,6 +14,9 @@ import FacilityLane from '../LV2/FacilityLane';
 import TimeLaneHeader from '../LV2/TimeLaneHeader';
 
 const Container = styled.div`
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 3px rgb(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   padding: 3em;

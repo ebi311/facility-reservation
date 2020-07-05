@@ -7,6 +7,7 @@ import Router from './router';
 import store, { history } from './store';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import momentUtils from '@date-io/moment';
+import GlobalStyle from './components/globalStyle';
 
 moment.locale('ja');
 
@@ -14,6 +15,7 @@ momentUtils.prototype.getDateTimePickerHeaderText = date => date.format('M/D');
 
 const component = (
   <Provider store={store}>
+    <GlobalStyle />
     <MuiPickersUtilsProvider utils={momentUtils}>
       <ConnectedRouter history={history}>
         <Router />

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import IReservation from '../../status/IReservation';
 import moment from 'moment';
 import { constraints } from '../../constraints';
+import { useHistory } from 'react-router';
+import { lighten } from 'polished';
 
 type PropsType = {
   reservation: IReservation;
@@ -18,13 +20,17 @@ type BarType = {
 };
 
 const Bar = styled.div<BarType>`
-  height: ${constraints.rowHeight / 2}px;
   background-color: ${p => p.color};
-  position: absolute;
+  cursor: pointer;
+  height: ${constraints.rowHeight / 2}px;
   left: ${p => p.offset}px;
+  position: absolute;
   top: ${constraints.rowHeight / 4}px;
   width: ${p => p.width}px;
   z-index: 10;
+  :hover {
+    background-color: ${p => lighten(0.2, p.color)};
+  }
 `;
 
 const ReservationBar: React.FC<PropsType> = props => {
@@ -36,9 +42,19 @@ const ReservationBar: React.FC<PropsType> = props => {
     (offsetTime / 60) * props.timeWidth + constraints.rowHeaderWidth;
   const diffTime = endDate.diff(startDate, 'minutes');
   const width = (diffTime / 60) * props.timeWidth;
+
+  const history = useHistory();
+  const onClick = useCallback(() => {
+    history.push(`/reservations/${props.reservation.id}`);
+  }, [props.reservation]);
   return (
     <>
-      <Bar color={props.color} width={width} offset={offsetPixel}></Bar>
+      <Bar
+        color={props.color}
+        width={width}
+        offset={offsetPixel}
+        onClick={onClick}
+      />
     </>
   );
 };
