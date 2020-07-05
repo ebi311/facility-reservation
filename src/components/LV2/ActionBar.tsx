@@ -39,9 +39,7 @@ const ActionBar: React.FC<PropsType> = props => {
           startIcon={<SaveIcon />}
           variant="contained"
           color="primary"
-          onClick={() => {
-            alert('保存');
-          }}
+          onClick={props.onSave}
         >
           保存
         </Button>

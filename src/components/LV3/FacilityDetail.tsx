@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { loadFacility } from '../../actions/facilityActions';
 import IFacilityPage from '../../status/IFacilityPage';
 import IState from '../../status/IState';
-import ActionBar from '../LV2/ActionBar';
 import FacilityForm from '../LV2/FacilityForm';
 import FormHeader from '../LV2/FormHeader';
 
@@ -26,14 +25,6 @@ const FacilityDetail: React.FC<PropsType> = props => {
     loadFacility(props.match.params.id, dispatch);
   }, []);
 
-  const onSave = useCallback(() => {
-    alert('save');
-  }, []);
-
-  const onDelete = useCallback(() => {
-    confirm('削除して良いですか？');
-  }, []);
-
   const onClose = useCallback(() => {
     props.history.goBack();
   }, []);
@@ -49,7 +40,6 @@ const FacilityDetail: React.FC<PropsType> = props => {
     <Container maxWidth="sm">
       <FormHeader onCloseClick={onClose} />
       {loading ? <Loading type="spin" color="#aaa" /> : form}
-      <ActionBar onSave={onSave} onDelete={onDelete} />
     </Container>
   );
 };

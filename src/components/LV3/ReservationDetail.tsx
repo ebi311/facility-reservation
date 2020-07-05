@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { loadReservation } from '../../actions/reservationDetailActions';
 import IReservationPage from '../../status/IReservationDetailPage';
 import IState from '../../status/IState';
-import ActionBar from '../LV2/ActionBar';
 import FormHeader from '../LV2/FormHeader';
 import ReservationForm from '../LV2/ReservationForm';
 
@@ -26,23 +25,13 @@ const ReservationDetail: React.FC<PropsType> = props => {
     loadReservation(props.match.params.id, dispatch);
   }, []);
 
-  const onSave = useCallback(() => {
-    alert('save');
-  }, []);
-
-  const onDelete = useCallback(() => {
-    confirm('削除して良いですか？');
-  }, []);
-
   const onClose = useCallback(() => {
     props.history.goBack();
   }, []);
 
   const form = useMemo(
     () => (
-      <form>
-        <ReservationForm reservation={reservation} facilities={facilityList} />
-      </form>
+      <ReservationForm reservation={reservation} facilities={facilityList} />
     ),
     [reservation, facilityList],
   );
@@ -51,7 +40,6 @@ const ReservationDetail: React.FC<PropsType> = props => {
     <Container maxWidth="sm">
       <FormHeader onCloseClick={onClose} />
       {loading ? <Loading type="spin" color="#aaa" /> : form}
-      <ActionBar onSave={onSave} onDelete={onDelete} />
     </Container>
   );
 };

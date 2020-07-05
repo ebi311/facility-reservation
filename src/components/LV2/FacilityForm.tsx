@@ -1,8 +1,9 @@
 import { TextField } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import IFacility from '../../status/IFacility';
+import ActionBar from './ActionBar';
 
 type PropsType = {
   facility: IFacility;
@@ -20,6 +21,14 @@ const FacilityForm: React.FC<PropsType> = props => {
   useEffect(() => {
     reset(props.facility);
   }, [props.facility]);
+
+  const onSave = useCallback(() => {
+    alert('save');
+  }, []);
+
+  const onDelete = useCallback(() => {
+    confirm('削除して良いですか？');
+  }, []);
 
   return (
     <>
@@ -46,6 +55,7 @@ const FacilityForm: React.FC<PropsType> = props => {
           rules={{ required: true }}
         />
       </Paragraph>
+      <ActionBar onSave={onSave} onDelete={onDelete} />
     </>
   );
 };

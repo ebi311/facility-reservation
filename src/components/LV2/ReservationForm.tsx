@@ -1,49 +1,127 @@
-import { MenuItem, Select, TextField } from '@material-ui/core';
-import React, { useEffect, useMemo } from 'react';
+import {
+  MenuItem,
+  Select,
+  TextField,
+  InputLabel,
+  FormControl,
+} from '@material-ui/core';
+import { KeyboardDateTimePicker } from '@material-ui/pickers';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
+import ActionBar from './ActionBar';
 
 type PropsType = {
   reservation: IReservation;
   facilities: IFacility[];
 };
 
-const Paragraph = styled.div`
-  margin: 1em;
+const DateRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
+
+const Kara = styled.div`
+  margin: 0 1em;
+`;
+
+const Paragraph = styled.div`
+  padding-top: 1em;
+`;
+
 const ReservationForm: React.FC<PropsType> = props => {
-  const { errors, control, reset } = useForm<IReservation>({
+  const { errors, control, reset, getValues, trigger, setError } = useForm<
+    IReservation
+  >({
     defaultValues: props.reservation,
-    mode: 'onBlur',
+    // mode: 'onBlur',
   });
 
   useEffect(() => {
     reset(props.reservation);
   }, [props.reservation]);
 
-  const facilitySelect = useMemo(() => {
-    const menuItems = props.facilities.map(fa => (
+  const onSave = useCallback(async () => {
+    const data = getValues();
+    await trigger();
+    if (data.facilityId === '') {
+      setError('facilityId', { type: 'required' });
+    }
+    console.log(data);
+  }, []);
+
+  const onDelete = useCallback(() => {
+    confirm('削除して良いですか？');
+  }, []);
+
+  const menuItems = useMemo(() => {
+    return props.facilities.map(fa => (
       <MenuItem key={fa.id} value={fa.id}>
         {fa.name}
       </MenuItem>
     ));
-    return <Select label="設備">{menuItems}</Select>;
   }, [props.facilities]);
 
   return (
     <>
       <Paragraph>
-        <>
-          {/* <InputLabel>設備</InputLabel> */}
+        <FormControl fullWidth>
+          <InputLabel id="facility-label" error={!!errors.facilityId}>
+            設備
+          </InputLabel>
           <Controller
-            as={facilitySelect}
+            as={
+              <Select
+                label="設備"
+                labelId="facility-label"
+                error={!!errors.facilityId}
+                fullWidth
+              >
+                {menuItems}
+              </Select>
+            }
             name="facilityId"
-            rules={{ required: true }}
             control={control}
           />
-        </>
+        </FormControl>
+      </Paragraph>
+      <Paragraph>
+        <DateRow>
+          <Controller
+            as={
+              <KeyboardDateTimePicker
+                label="開始日時"
+                ampm={false}
+                format="YYYY-MM-DD HH:mm"
+                onChange={() => {
+                  /** react-hook-form で定義されるが必須のため、空関数とする */
+                }}
+                value=""
+              />
+            }
+            name="startDate"
+            control={control}
+          />
+          <Kara>～</Kara>
+          <Controller
+            as={
+              <KeyboardDateTimePicker
+                label="終了日時"
+                ampm={false}
+                format="YYYY-MM-DD HH:mm"
+                onChange={() => {
+                  /** react-hook-form で定義されるが必須のため、空関数とする */
+                }}
+                value=""
+              />
+            }
+            name="endDate"
+            control={control}
+          />
+        </DateRow>
       </Paragraph>
       <Paragraph>
         <Controller
@@ -55,7 +133,7 @@ const ReservationForm: React.FC<PropsType> = props => {
               helperText={!!errors.subject ? '必須です' : ''}
             />
           }
-          name="name"
+          name="subject"
           control={control}
           rules={{ required: true }}
         />
@@ -67,6 +145,9 @@ const ReservationForm: React.FC<PropsType> = props => {
           control={control}
           rules={{ required: true }}
         />
+      </Paragraph>
+      <Paragraph>
+        <ActionBar onSave={onSave} onDelete={onDelete} />
       </Paragraph>
     </>
   );
