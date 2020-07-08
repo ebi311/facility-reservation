@@ -1,7 +1,7 @@
 {
   "name": "facility-reservation",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "functions/lib/index.js",
   "license": "MIT",
   "devDependencies": {
     "@types/history": "^4.7.6",
