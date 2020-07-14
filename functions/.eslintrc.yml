@@ -1,0 +1,56 @@
+env:
+  browser: true
+  es6: true
+extends:
+  - 'plugin:react/recommended'
+  - google
+  - plugin:@typescript-eslint/recommended
+  - prettier
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 11
+  sourceType: module
+plugins:
+  - react
+  - '@typescript-eslint'
+  - prettier
+rules:
+  eqeqeq: error
+  valid-jsdoc: 0
+  react/prop-types: off
+  '@typescript-eslint/explicit-function-return-type': off
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - argsIgnorePattern: '^_'
+      varsIgnorePattern: '^_'
+  '@typescript-eslint/naming-convention':
+    - warn
+    - selector: default
+      format:
+        - camelCase
+        - PascalCase
+      leadingUnderscore: 'allow'
+    - selector: parameter
+      format:
+        - camelCase
+      leadingUnderscore: allow
+    - selector: class
+      format:
+        - PascalCase
+    - selector: typeAlias
+      format:
+        - PascalCase
+      suffix:
+        - Type
+    - selector: interface
+      format:
+        - PascalCase
+      prefix:
+        - I
+  prettier/prettier:
+    - error
