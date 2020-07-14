@@ -27,12 +27,14 @@ rules:
   '@typescript-eslint/no-unused-vars':
     - error
     - argsIgnorePattern: '^_'
+      varsIgnorePattern: '^_'
   '@typescript-eslint/naming-convention':
     - warn
     - selector: default
       format:
         - camelCase
         - PascalCase
+      leadingUnderscore: 'allow'
     - selector: parameter
       format:
         - camelCase

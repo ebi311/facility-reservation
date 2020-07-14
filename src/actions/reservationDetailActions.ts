@@ -30,7 +30,7 @@ export const loadReservation = async (
         createDate: new Date(),
         createUser: '',
         lastUpdate: new Date(),
-        latUpdateUser: '',
+        lastUpdateUser: '',
       },
     };
     dispatch(loadReservationAction.done({ params: null, result: task }));

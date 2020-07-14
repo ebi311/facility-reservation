@@ -1,44 +1,43 @@
 import IFacility from '../status/IFacility';
+import superagent from 'superagent';
+// import URL from 'url';
 
-export const dummyData: IFacility[] = [
-  {
-    description: '',
-    id: 'f001',
-    name: 'f-001',
-    system: {
-      createDate: new Date(),
-      createUser: 'user001',
-      lastUpdate: new Date(),
-      latUpdateUser: 'user002',
-    },
-  },
-  {
-    description: '',
-    id: 'f002',
-    name: 'f-002',
-    system: {
-      createDate: new Date(),
-      createUser: 'user001',
-      lastUpdate: new Date(),
-      latUpdateUser: 'user002',
-    },
-  },
-];
-
-export const getFacilities = (): Promise<IFacility[]> => {
-  // シミュレート
-  return new Promise((resolve, _reject) => {
-    setTimeout(() => {
-      resolve(dummyData);
-    }, 1000);
+export const getFacilities = async (): Promise<IFacility[]> => {
+  const result = await superagent.get('/api/facilities/').catch(e => {
+    throw e;
   });
+  console.log();
+  return result.body as IFacility[];
 };
 
-export const getFacility = (id: string): Promise<IFacility> => {
-  return new Promise((resolve, _reject) => {
-    const facility = dummyData.find(data => data.id === id);
-    setTimeout(() => {
-      resolve(facility);
-    }, 1000);
+export const getFacility = async (id: string): Promise<IFacility | null> => {
+  const encId = encodeURI(id);
+  const result = await superagent.get(`/api/facilities/${encId}`).catch(e => {
+    console.log(e);
   });
+  if (!result) return null;
+  return result.body as IFacility;
+};
+
+export const postFacility = async (
+  data: IFacility,
+): Promise<IFacility | null> => {
+  const result = await superagent
+    .post('/api/facilities/')
+    .send(data)
+    .catch(e => {
+      console.log(e);
+    });
+  if (!result) return null;
+  console.log(result.body);
+  return result.body as IFacility;
+};
+
+export const putFacility = async (
+  data: IFacility,
+): Promise<IFacility | null> => {
+  const id = encodeURI(data.id);
+  const result = await superagent.put('/api/facilities/' + id).send(data);
+  if (!result) return null;
+  return result.body as IFacility;
 };

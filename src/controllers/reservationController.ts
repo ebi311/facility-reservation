@@ -12,7 +12,7 @@ const dummyData: IReservation[] = [
       createDate: new Date(),
       createUser: '',
       lastUpdate: new Date(),
-      latUpdateUser: '',
+      lastUpdateUser: '',
     },
   },
   {
@@ -26,7 +26,7 @@ const dummyData: IReservation[] = [
       createDate: new Date(),
       createUser: '',
       lastUpdate: new Date(),
-      latUpdateUser: '',
+      lastUpdateUser: '',
     },
   },
 ];

@@ -2,7 +2,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const distPath = path.join(__dirname, './dist');
+const distPath = path.join(__dirname, './public');
 
 module.exports = {
   entry: path.join(__dirname, './src/', 'index.tsx'),

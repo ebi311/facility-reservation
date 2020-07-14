@@ -7,7 +7,7 @@ yarn-error.log*
 firebase-debug.log*
 firebase.json
 .firebaserc
-functions/
+# functions/
 # Firebase cache
 .firebase/
 
@@ -66,3 +66,4 @@ node_modules/
 # dotenv environment variables file
 .env
 firestore.rules
+public/

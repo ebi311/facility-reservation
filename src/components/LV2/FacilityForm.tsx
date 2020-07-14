@@ -1,7 +1,9 @@
 import { TextField } from '@material-ui/core';
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { saveFacility } from '../../actions/facilityActions';
 import IFacility from '../../status/IFacility';
 import ActionBar from './ActionBar';
 
@@ -13,17 +15,22 @@ const Paragraph = styled.div`
   margin: 1em;
 `;
 const FacilityForm: React.FC<PropsType> = props => {
-  const { errors, control, reset } = useForm<IFacility>({
+  const { errors, control, reset, getValues } = useForm<IFacility>({
     defaultValues: props.facility,
     mode: 'onBlur',
   });
-
   useEffect(() => {
     reset(props.facility);
   }, [props.facility]);
 
+  const dispatch = useDispatch();
   const onSave = useCallback(() => {
-    alert('save');
+    const formData = getValues();
+    const saveData = {
+      ...props.facility,
+      ...formData,
+    };
+    saveFacility(saveData as IFacility, dispatch);
   }, []);
 
   const onDelete = useCallback(() => {

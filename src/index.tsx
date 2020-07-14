@@ -8,6 +8,10 @@ import store, { history } from './store';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import momentUtils from '@date-io/moment';
 import GlobalStyle from './components/globalStyle';
+import { setupFirebase } from './firebaseConfiguration';
+
+// Firebase の初期設定を行う
+setupFirebase();
 
 moment.locale('ja');
 

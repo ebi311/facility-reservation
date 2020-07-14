@@ -2,7 +2,6 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import { loadReservationAction } from '../actions/reservationDetailActions';
 import IReservationPage from '../status/IReservationDetailPage';
 import { createInitSystem } from '../status/ISystem';
-import { dummyData as facilities } from '../controllers/facilityController';
 
 const init: IReservationPage = {
   reservation: {
@@ -14,7 +13,7 @@ const init: IReservationPage = {
     endDate: new Date('2020-08-02T06:00:00Z'),
     system: createInitSystem(),
   },
-  facilityList: facilities,
+  facilityList: [],
   loading: false,
 };
 
