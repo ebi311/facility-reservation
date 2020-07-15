@@ -42,7 +42,7 @@ const ReservationForm: React.FC<PropsType> = props => {
 
   useEffect(() => {
     reset(props.reservation);
-  }, [props.reservation]);
+  }, [props.reservation, reset]);
 
   const onSave = useCallback(async () => {
     const data = getValues();
@@ -51,7 +51,7 @@ const ReservationForm: React.FC<PropsType> = props => {
       setError('facilityId', { type: 'required' });
     }
     console.log(data);
-  }, []);
+  }, [getValues, setError, trigger]);
 
   const onDelete = useCallback(() => {
     confirm('削除して良いですか？');

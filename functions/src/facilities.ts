@@ -133,14 +133,25 @@ export const __private = {
     if (!result) return;
     res.status(204).send().end();
   },
+  delete: async (req: Request<IdParamType>, res: Response): Promise<void> => {
+    const [, , docRef] = await getDocById(req.params.id);
+    const result = await docRef.delete().catch(e => {
+      console.error(e);
+      res.status(500).send().end();
+    });
+    if (!result) return;
+    res.status(204).send().end();
+  },
 };
 
-app.get<IdParamType>('/:id', __private.getById);
+app.get('/:id', __private.getById);
 
 app.get('/', __private.get);
 
-app.post<never, string, IFacility>('/', __private.post);
+app.post('/', __private.post);
 
-app.put<IdParamType, string, Partial<IFacility>>('/:id', __private.put);
+app.put('/:id', __private.put);
+
+app.delete('/:id', __private.delete);
 
 export default app;

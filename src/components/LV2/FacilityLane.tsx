@@ -77,7 +77,8 @@ const createReservationRows = (
 
 const FacilityLane: React.FC<PropsType> = props => {
   const [reserveBars, setReserveBars] = useState<JSX.Element[]>([]);
-  const ro = useMemo(() => {
+  const [rowRef, setRowRef] = useState<HTMLDivElement | null>(null);
+  const resizeObserver = useMemo(() => {
     return new ResizeObserver((entries, _observer) => {
       entries.forEach(entry => {
         const bars = createReservationRows(
@@ -87,24 +88,31 @@ const FacilityLane: React.FC<PropsType> = props => {
         setReserveBars(bars);
       });
     });
-  }, []);
-  const rowRef = useCallback((ref: HTMLDivElement) => {
-    if (!ref) {
-      ro.disconnect();
-      return;
-    }
-    const bars = createReservationRows(ref, props);
-    ro.observe(ref);
-    setReserveBars(bars);
-  }, []);
+  }, [props]);
+  const rowRefEvent = useCallback(
+    (ref: HTMLDivElement) => {
+      if (!ref) {
+        resizeObserver.disconnect();
+        return;
+      }
+      setRowRef(ref);
+      resizeObserver.observe(ref);
+      setReserveBars(createReservationRows(ref, props));
+    },
+    [props, resizeObserver],
+  );
+  useEffect(() => {
+    if (!rowRef) return;
+    setReserveBars(createReservationRows(rowRef, props));
+    return () => resizeObserver.disconnect();
+  }, [props, resizeObserver, rowRef]);
   useEffect(() => {
     return () => {
-      ro.disconnect();
+      resizeObserver.disconnect();
     };
-  }, []);
-
+  }, [resizeObserver]);
   return (
-    <Row ref={rowRef}>
+    <Row ref={rowRefEvent}>
       <Cells color={props.color} facility={props.facility} />
       {reserveBars}
     </Row>

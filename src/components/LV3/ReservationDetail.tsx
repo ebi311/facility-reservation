@@ -30,10 +30,10 @@ const ReservationDetail: React.FC<PropsType> = props => {
 
   useEffect(() => {
     loadReservation(props.match.params.id, dispatch);
-  }, []);
+  }, [dispatch, props.match.params.id]);
 
   const history = useHistory();
-  const onClose = useCallback(() => history.push('/'), []);
+  const onClose = useCallback(() => history.push('/'), [history]);
 
   const form = useMemo(
     () => (

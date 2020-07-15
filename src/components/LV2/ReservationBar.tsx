@@ -46,7 +46,7 @@ const ReservationBar: React.FC<PropsType> = props => {
   const history = useHistory();
   const onClick = useCallback(() => {
     history.push(`/reservations/${props.reservation.id}`);
-  }, [props.reservation]);
+  }, [history, props.reservation.id]);
   return (
     <>
       <Bar

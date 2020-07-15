@@ -3,9 +3,10 @@ import React, { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { saveFacility } from '../../actions/facilityActions';
+import { saveFacility, deleteFacility } from '../../actions/facilityActions';
 import IFacility from '../../status/IFacility';
 import ActionBar from './ActionBar';
+import { useHistory } from 'react-router';
 
 type PropsType = {
   facility: IFacility;
@@ -21,21 +22,23 @@ const FacilityForm: React.FC<PropsType> = props => {
   });
   useEffect(() => {
     reset(props.facility);
-  }, [props.facility]);
+  }, [props.facility, reset]);
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const onSave = useCallback(() => {
     const formData = getValues();
     const saveData = {
       ...props.facility,
       ...formData,
     };
-    saveFacility(saveData as IFacility, dispatch);
-  }, []);
+    saveFacility(saveData as IFacility, dispatch, () => history.push('/'));
+  }, [getValues, props.facility, dispatch, history]);
 
   const onDelete = useCallback(() => {
-    confirm('削除して良いですか？');
-  }, []);
+    if (!confirm('削除して良いですか？')) return;
+    deleteFacility(props.facility.id, dispatch, () => history.push('/'));
+  }, [dispatch, history, props.facility.id]);
 
   return (
     <>
@@ -56,7 +59,7 @@ const FacilityForm: React.FC<PropsType> = props => {
       </Paragraph>
       <Paragraph>
         <Controller
-          as={<TextField multiline rows={3} label="詳細" fullWidth />}
+          as={<TextField multiline label="詳細" fullWidth />}
           name="description"
           control={control}
           rules={{ required: true }}

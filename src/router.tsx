@@ -4,7 +4,7 @@ import FacilityDetail from './components/LV3/FacilityDetail';
 import Login from './components/LV3/Login';
 import ReservationDetail from './components/LV3/ReservationDetail';
 import ReservationList from './components/LV3/ReservationList';
-import { requireAuth } from './requireAuth';
+// import { requireAuth } from './requireAuth';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type RouteComponentType = RouteComponentProps<any>;
@@ -26,6 +26,12 @@ const Router: React.FC = () => {
         exact
         path="/reservations/:id"
         component={render(ReservationDetail)}
+      />
+      <Route
+        exact
+        path="/facilities/"
+        strict
+        component={render(FacilityDetail)}
       />
       <Route exact path="/facilities/:id" component={render(FacilityDetail)} />
     </Switch>

@@ -7,7 +7,7 @@ import { getFacilities } from '../controllers/facilityController';
 
 const actionCreator = actionCreatorFactory('task-list');
 
-export const loadTaskListAction = actionCreator.async<
+export const loadReservationListAction = actionCreator.async<
   unknown,
   IReservation[],
   unknown
@@ -23,9 +23,9 @@ export const loadReservationList = async (
   date: Date,
   dispatch: Dispatch,
 ): Promise<void> => {
-  dispatch(loadTaskListAction.started({}));
+  dispatch(loadReservationListAction.started({}));
   const data = await getReservations(date);
-  const action = loadTaskListAction.done({
+  const action = loadReservationListAction.done({
     result: data,
     params: {},
   });

@@ -1,7 +1,7 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import ITaskListPage from '../status/IReservationListPage';
 import {
-  loadTaskListAction,
+  loadReservationListAction,
   loadFacilityAction,
 } from '../actions/reservationListAction';
 
@@ -13,11 +13,11 @@ const init: ITaskListPage = {
 };
 
 const taskListReducer = reducerWithInitialState<ITaskListPage>(init)
-  .case(loadTaskListAction.done, (state, _payload) => ({
+  .case(loadReservationListAction.done, (state, _payload) => ({
     ...state,
     loading: true,
   }))
-  .case(loadTaskListAction.done, (state, payload) => ({
+  .case(loadReservationListAction.done, (state, payload) => ({
     ...state,
     loading: false,
     reservationList: payload.result,
