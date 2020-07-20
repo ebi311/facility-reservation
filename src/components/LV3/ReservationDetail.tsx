@@ -9,6 +9,8 @@ import IReservationPage from '../../status/IReservationDetailPage';
 import IState from '../../status/IState';
 import FormHeader from '../LV2/FormHeader';
 import ReservationForm from '../LV2/ReservationForm';
+import { loadFacilityList } from '../../actions/reservationListAction';
+import IFacility from '../../status/IFacility';
 
 type PropsType = RouteComponentProps<{ id: string }>;
 
@@ -25,21 +27,23 @@ const Container = styled(ContainerOriginal)`
 
 const ReservationDetail: React.FC<PropsType> = props => {
   const storeState = useSelector<IState, IReservationPage>(s => s.reservation);
-  const { reservation, loading, facilityList } = storeState;
+  const facilities = useSelector<IState, IFacility[]>(
+    s => s.reservationList.facilities,
+  );
+  const { reservation, loading } = storeState;
   const dispatch = useDispatch();
 
   useEffect(() => {
     loadReservation(props.match.params.id, dispatch);
+    loadFacilityList(dispatch);
   }, [dispatch, props.match.params.id]);
 
   const history = useHistory();
   const onClose = useCallback(() => history.push('/'), [history]);
 
   const form = useMemo(
-    () => (
-      <ReservationForm reservation={reservation} facilities={facilityList} />
-    ),
-    [reservation, facilityList],
+    () => <ReservationForm reservation={reservation} facilities={facilities} />,
+    [reservation, facilities],
   );
 
   return (

@@ -13,7 +13,6 @@ const init: IReservationPage = {
     endDate: new Date('2020-08-02T06:00:00Z'),
     system: createInitSystem(),
   },
-  facilityList: [],
   loading: false,
 };
 
@@ -24,7 +23,7 @@ const reservationDetailReducer = reducerWithInitialState<IReservationPage>(init)
   }))
   .case(loadReservationAction.done, (state, payload) => ({
     ...state,
-    task: payload.result,
+    reservation: payload.result,
     loading: false,
   }))
   .build();

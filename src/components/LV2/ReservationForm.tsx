@@ -59,7 +59,8 @@ const ReservationForm: React.FC<PropsType> = props => {
 
   const menuItems = useMemo(() => {
     return props.facilities.map(fa => (
-      <MenuItem key={fa.id} value={fa.id}>
+      // 予約データには facilities/{id} とある
+      <MenuItem key={fa.id} value={`facilities/${fa.id}`}>
         {fa.name}
       </MenuItem>
     ));
@@ -140,7 +141,7 @@ const ReservationForm: React.FC<PropsType> = props => {
       </Paragraph>
       <Paragraph>
         <Controller
-          as={<TextField multiline rows={3} label="詳細" fullWidth />}
+          as={<TextField multiline label="詳細" fullWidth />}
           name="description"
           control={control}
           rules={{ required: true }}

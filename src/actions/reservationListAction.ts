@@ -13,12 +13,6 @@ export const loadReservationListAction = actionCreator.async<
   unknown
 >('load-task-list');
 
-export const loadFacilityAction = actionCreator.async<
-  unknown,
-  IFacility[],
-  unknown
->('load-facilities');
-
 export const loadReservationList = async (
   date: Date,
   dispatch: Dispatch,
@@ -31,6 +25,12 @@ export const loadReservationList = async (
   });
   dispatch(action);
 };
+
+export const loadFacilityAction = actionCreator.async<
+  unknown,
+  IFacility[],
+  unknown
+>('load-facilities');
 
 export const loadFacilityList = async (dispatch: Dispatch): Promise<void> => {
   dispatch(loadFacilityAction.started({}));
