@@ -37,10 +37,10 @@ const ReservationList: React.FC = () => {
   const state = useSelector<IState, ITaskListPage>(s => s.reservationList);
 
   useEffect(() => {
-    loadReservationList(new Date(), dispatch).then(() => {
+    loadReservationList(state.date, dispatch).then(() => {
       loadFacilityList(dispatch);
     });
-  }, [dispatch]);
+  }, [dispatch, state.date]);
 
   const list = useMemo(() => {
     resetColor();

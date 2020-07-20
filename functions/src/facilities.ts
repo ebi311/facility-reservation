@@ -1,23 +1,22 @@
-import express, { Request, Response } from 'express';
-import { Firestore, Timestamp } from '@google-cloud/firestore';
-import IFacility from './status/IFacility';
 import {
   CollectionReference,
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
+  Firestore,
   FirestoreDataConverter,
   Query,
 } from '@google-cloud/firestore';
+import express, { Request, Response } from 'express';
+import IFacility from './status/IFacility';
 
 const firestore = new Firestore();
 
-const app = express();
+type IdParamType = {
+  id: string;
+};
 
-app.set('json replacer', (key: string, value: never) => {
-  if (typeof value['toDate'] !== 'function') return value;
-  return (value as Timestamp).toDate().toISOString();
-});
+const app = express();
 
 const collectionName = 'facilities';
 
@@ -31,6 +30,9 @@ const converter: FirestoreDataConverter<IFacility> = {
   },
 };
 
+const getCollection = () =>
+  firestore.collection(collectionName).withConverter(converter);
+
 const getDocById = async (
   id: string,
 ): Promise<
@@ -40,10 +42,7 @@ const getDocById = async (
     DocumentReference<DocumentData>,
   ]
 > => {
-  const docRef = firestore
-    .collection(collectionName)
-    .doc(id)
-    .withConverter<IFacility>(converter);
+  const docRef = getCollection().doc(id);
   const doc = await docRef.get();
   const data = doc.data();
   if (!doc.exists || !data) {
@@ -53,25 +52,19 @@ const getDocById = async (
   return [data, doc, docRef];
 };
 
-type IdParamType = {
-  id: string;
-};
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const __private = {
   getById: async (req: Request<IdParamType>, res: Response): Promise<void> => {
     const [data] = await getDocById(req.params.id);
     if (!data) {
-      return res.status(404).send().end();
+      return res.status(404).end();
     }
     res.json(data);
   },
   get: async (req: Request, res: Response): Promise<void> => {
     let query:
       | CollectionReference<IFacility>
-      | Query<IFacility> = firestore
-      .collection(collectionName)
-      .withConverter<IFacility>(converter);
+      | Query<IFacility> = getCollection();
     if (req.query.name) {
       query = query
         .where('name', '>=', req.query.name)

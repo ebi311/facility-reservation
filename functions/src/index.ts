@@ -3,11 +3,18 @@ import express from 'express';
 import * as functions from 'firebase-functions';
 // import auth from './auth';
 import facilities from './facilities';
+import reservations from './reservations';
 import samples from './samples';
+import { Timestamp } from '@google-cloud/firestore';
 
 // import session from 'express-session';
 
 const app = express();
+
+app.set('json replacer', (key: string, value: never) => {
+  if (typeof value['toDate'] !== 'function') return value;
+  return (value as Timestamp).toDate().toISOString();
+});
 
 app.use(
   bodyParser.json({
@@ -32,6 +39,7 @@ app.use(
 // );
 // app.use(auth);
 app.use('/api/facilities/', facilities);
+app.use('/api/reservations/', reservations);
 app.get('/api/version/', (req, res) => {
   res.send('1.0.0');
 });

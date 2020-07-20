@@ -63,15 +63,17 @@ const createReservationRows = (
   const cellWidth = (element?.querySelector('.first') as HTMLElement)
     ?.offsetWidth;
   if (!cellWidth) return [];
-  const bars = props.reservations.map(r => (
-    <ReservationBar
-      key={r.id}
-      color={props.color}
-      beginTime={beginDate}
-      reservation={r}
-      timeWidth={cellWidth}
-    />
-  ));
+  const bars = props.reservations
+    .filter(r => r.facilityId === `facilities/${props.facility.id}`)
+    .map(r => (
+      <ReservationBar
+        key={r.id}
+        color={props.color}
+        beginTime={beginDate}
+        reservation={r}
+        timeWidth={cellWidth}
+      />
+    ));
   return bars;
 };
 
