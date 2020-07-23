@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { constraints } from '../../constraints';
+import { theme } from '../globalStyle';
 
 type PropsType = {
   backgroundColor?: string;
@@ -8,6 +9,7 @@ type PropsType = {
   color?: string;
   text?: string;
   width?: string;
+  onClick?: () => void;
 };
 
 const Cell = styled.div<PropsType>`
@@ -15,6 +17,7 @@ const Cell = styled.div<PropsType>`
   border: 1px solid #666;
   box-sizing: border-box;
   color: ${p => p.color || 'inherit'};
+  cursor: ${p => (p.onClick ? 'pointer' : 'inherit')};
   flex-basis: ${p => (p.width ? 'auto' : '0')};
   flex-grow: ${p => (p.width ? '0' : '1')};
   flex-shrink: 0;
@@ -23,6 +26,10 @@ const Cell = styled.div<PropsType>`
   position: relative;
   text-align: center;
   width: ${p => p.width || 'auto'};
+  &:hover {
+    background-color: ${p =>
+      p.onClick ? theme.palette.primary.light : 'inherit'};
+  }
 `;
 
 const LaneCell: React.FC<PropsType> = props => {

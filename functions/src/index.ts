@@ -1,4 +1,3 @@
-import bodyParser from 'body-parser';
 import express from 'express';
 import * as functions from 'firebase-functions';
 // import auth from './auth';
@@ -6,27 +5,19 @@ import facilities from './facilities';
 import reservations from './reservations';
 import samples from './samples';
 import { Timestamp } from '@google-cloud/firestore';
+import morgan from 'morgan';
 
 // import session from 'express-session';
 
 const app = express();
+
+app.use(morgan('dev'));
 
 app.set('json replacer', (key: string, value: never) => {
   if (typeof value['toDate'] !== 'function') return value;
   return (value as Timestamp).toDate().toISOString();
 });
 
-app.use(
-  bodyParser.json({
-    reviver: (key, value) => {
-      if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value)) {
-        return new Date(value);
-      } else {
-        return value;
-      }
-    },
-  }),
-);
 // app.use(
 //   session({
 //     cookie: {

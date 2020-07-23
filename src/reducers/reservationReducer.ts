@@ -1,5 +1,9 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { loadReservationAction } from '../actions/reservationDetailActions';
+import {
+  asyncProcessAction,
+  initReservationAction,
+  loadReservationAction,
+} from '../actions/reservationDetailActions';
 import IReservationPage from '../status/IReservationDetailPage';
 import { createInitSystem } from '../status/ISystem';
 
@@ -9,8 +13,8 @@ const init: IReservationPage = {
     facilityId: '',
     subject: '',
     description: '',
-    startDate: new Date('2020-08-02T05:00:00Z'),
-    endDate: new Date('2020-08-02T06:00:00Z'),
+    startDate: new Date(),
+    endDate: new Date(),
     system: createInitSystem(),
   },
   loading: false,
@@ -26,6 +30,21 @@ const reservationDetailReducer = reducerWithInitialState<IReservationPage>(init)
     reservation: payload.result,
     loading: false,
   }))
+  .case(asyncProcessAction.started, state => ({
+    ...state,
+    loading: true,
+  }))
+  .case(asyncProcessAction.started, state => ({
+    ...state,
+    loading: false,
+  }))
+  .case(initReservationAction, (state, payload) => {
+    const reservation = { ...init.reservation, ...payload };
+    return {
+      reservation: reservation,
+      loading: false,
+    };
+  })
   .build();
 
 export default reservationDetailReducer;

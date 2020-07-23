@@ -7,8 +7,9 @@ import Router from './router';
 import store, { history } from './store';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import momentUtils from '@date-io/moment';
-import GlobalStyle from './components/globalStyle';
+import GlobalStyle, { theme } from './components/globalStyle';
 import { setupFirebase } from './firebaseConfiguration';
+import { ThemeProvider } from '@material-ui/core';
 
 // Firebase の初期設定を行う
 setupFirebase();
@@ -20,11 +21,13 @@ momentUtils.prototype.getDateTimePickerHeaderText = date => date.format('M/D');
 const component = (
   <Provider store={store}>
     <GlobalStyle />
-    <MuiPickersUtilsProvider utils={momentUtils}>
-      <ConnectedRouter history={history}>
-        <Router />
-      </ConnectedRouter>
-    </MuiPickersUtilsProvider>
+    <ThemeProvider theme={theme}>
+      <MuiPickersUtilsProvider utils={momentUtils}>
+        <ConnectedRouter history={history}>
+          <Router />
+        </ConnectedRouter>
+      </MuiPickersUtilsProvider>
+    </ThemeProvider>
   </Provider>
 );
 

@@ -24,6 +24,8 @@ const converter: FirestoreDataConverter<IReservation> = {
   },
   toFirestore: obj => {
     delete obj.id;
+    obj.startDate = new Date(obj.startDate);
+    obj.endDate = new Date(obj.endDate);
     return obj;
   },
 };
@@ -45,17 +47,13 @@ const _private = {
     req: Request<never, unknown, unknown, DateQueryType>,
     res: Response,
   ) => {
-    console.log(req.query.date);
     const startDate = moment(req.query.date);
     if (!startDate.isValid()) {
-      console.log('error');
       return res.status(400).end();
     }
     const endDate = moment(startDate);
     startDate.startOf('day');
     endDate.endOf('day');
-    console.log(startDate);
-    console.log(endDate);
     try {
       const docsRef = getCollection()
         .where('startDate', '>=', startDate.toDate())
@@ -68,8 +66,53 @@ const _private = {
       return res.status(500).send(e).end();
     }
   },
+  post: async (
+    req: Request<never, IReservation, IReservation, never>,
+    res: Response,
+  ) => {
+    const newDoc = req.body;
+    newDoc.system = {
+      createDate: new Date(),
+      createUser: '',
+      lastUpdate: new Date(),
+      lastUpdateUser: '',
+    };
+    const result = await getCollection().add(newDoc);
+    const savedDoc = (await result.get()).data();
+    res.send(savedDoc);
+  },
+  put: async (
+    req: Request<IdParamType, IReservation, Partial<IReservation>, never>,
+    res: Response,
+  ) => {
+    const { id } = req.params;
+    const oldDocSnapshot = await getCollection().doc(id).get();
+    const oldDoc = oldDocSnapshot.data();
+    delete req.body.id;
+    if (!oldDoc) {
+      return res.status(404).end();
+    }
+    const doc = {
+      ...oldDoc,
+      ...req.body,
+    };
+    await getCollection().doc(id).set(doc);
+    const updatedDocSnapshot = await getCollection().doc(id).get();
+    res.send(updatedDocSnapshot.data()).end();
+  },
+  delete: async (
+    req: Request<IdParamType, never, Partial<IReservation>, never>,
+    res: Response,
+  ) => {
+    const { id } = req.params;
+    await getCollection().doc(id).delete();
+    return res.status(204).send().end();
+  },
 };
 app.get('/:id', _private.getById);
 app.get('/', _private.get);
+app.post('/', _private.post);
+app.put('/:id', _private.put);
+app.delete('/:id', _private.delete);
 
 export default app;

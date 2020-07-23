@@ -7,6 +7,7 @@ import styled from 'styled-components';
 type PropsType = {
   onSave: () => void;
   onDelete: () => void;
+  showDelete: boolean;
 };
 
 const Actions = styled.div`
@@ -26,13 +27,15 @@ const ActionBar: React.FC<PropsType> = props => {
   return (
     <Actions>
       <ActionLeft>
-        <Button
-          startIcon={<DeleteIcon />}
-          color="secondary"
-          onClick={props.onDelete}
-        >
-          削除
-        </Button>
+        {props.showDelete ? (
+          <Button
+            startIcon={<DeleteIcon />}
+            color="secondary"
+            onClick={props.onDelete}
+          >
+            削除
+          </Button>
+        ) : null}
       </ActionLeft>
       <ActionRight>
         <Button

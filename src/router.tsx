@@ -29,6 +29,11 @@ const Router: React.FC = () => {
       />
       <Route
         exact
+        path="/reservations/"
+        component={render(ReservationDetail)}
+      />
+      <Route
+        exact
         path="/facilities/"
         strict
         component={render(FacilityDetail)}

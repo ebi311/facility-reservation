@@ -1,16 +1,22 @@
 import { Container as ContainerOriginal } from '@material-ui/core';
+import moment from 'moment';
+import queryString from 'query-string';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactLoading from 'react-loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router';
 import styled from 'styled-components';
-import { loadReservation } from '../../actions/reservationDetailActions';
+import {
+  initReservationAction,
+  loadReservation,
+} from '../../actions/reservationDetailActions';
+import { loadFacilityList } from '../../actions/reservationListAction';
+import IFacility from '../../status/IFacility';
 import IReservationPage from '../../status/IReservationDetailPage';
 import IState from '../../status/IState';
 import FormHeader from '../LV2/FormHeader';
 import ReservationForm from '../LV2/ReservationForm';
-import { loadFacilityList } from '../../actions/reservationListAction';
-import IFacility from '../../status/IFacility';
+import IReservation from '../../status/IReservation';
 
 type PropsType = RouteComponentProps<{ id: string }>;
 
@@ -31,12 +37,32 @@ const ReservationDetail: React.FC<PropsType> = props => {
     s => s.reservationList.facilities,
   );
   const { reservation, loading } = storeState;
+
+  const queryParams = useMemo<Partial<IReservation>>((): Partial<
+    IReservation
+  > => {
+    const qs = queryString.parse(location.search);
+    return {
+      startDate: qs.date ? moment(qs.date).startOf('hour').toDate() : undefined,
+      endDate: qs.date
+        ? moment(qs.date).add(1, 'hour').startOf('hour').toDate()
+        : undefined,
+      facilityId: qs.facilityId ? `facilities/${qs.facilityId}` : undefined,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
+
   const dispatch = useDispatch();
 
+  const { id } = props.match.params;
   useEffect(() => {
-    loadReservation(props.match.params.id, dispatch);
     loadFacilityList(dispatch);
-  }, [dispatch, props.match.params.id]);
+    if (id) {
+      loadReservation(id, dispatch);
+    } else {
+      dispatch(initReservationAction(queryParams));
+    }
+  }, [dispatch, id, queryParams]);
 
   const history = useHistory();
   const onClose = useCallback(() => history.push('/'), [history]);

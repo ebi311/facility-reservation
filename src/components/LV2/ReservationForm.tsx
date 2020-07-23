@@ -12,6 +12,12 @@ import styled from 'styled-components';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
 import ActionBar from './ActionBar';
+import { useDispatch } from 'react-redux';
+import {
+  addReservation,
+  updateReservation,
+  deleteReservation,
+} from '../../actions/reservationDetailActions';
 
 type PropsType = {
   reservation: IReservation;
@@ -33,29 +39,36 @@ const Paragraph = styled.div`
 `;
 
 const ReservationForm: React.FC<PropsType> = props => {
-  const { errors, control, reset, getValues, trigger, setError } = useForm<
-    IReservation
-  >({
+  const { errors, control, reset, getValues, trigger } = useForm<IReservation>({
     defaultValues: props.reservation,
-    // mode: 'onBlur',
+    mode: 'onBlur',
   });
-
+  const { reservation } = props;
   useEffect(() => {
     reset(props.reservation);
   }, [props.reservation, reset]);
-
+  const dispatch = useDispatch();
   const onSave = useCallback(async () => {
-    const data = getValues();
-    await trigger();
-    if (data.facilityId === '') {
-      setError('facilityId', { type: 'required' });
+    const result = await trigger();
+    if (!result) return;
+    const inputData = getValues() as Partial<IReservation>;
+    // react hook form では、フォームに割り当てた項目しか保持しない
+    // そのため、プロパティで渡された値(=初期値)とマージする
+    const data: IReservation = {
+      ...reservation,
+      ...inputData,
+    };
+    if (!reservation.id) {
+      addReservation(data, dispatch);
+    } else {
+      updateReservation(data, dispatch);
     }
-    console.log(data);
-  }, [getValues, setError, trigger]);
+  }, [dispatch, getValues, reservation, trigger]);
 
   const onDelete = useCallback(() => {
-    confirm('削除して良いですか？');
-  }, []);
+    if (!confirm('削除して良いですか？')) return;
+    deleteReservation(reservation.id, dispatch);
+  }, [dispatch, reservation.id]);
 
   const menuItems = useMemo(() => {
     return props.facilities.map(fa => (
@@ -86,6 +99,9 @@ const ReservationForm: React.FC<PropsType> = props => {
             }
             name="facilityId"
             control={control}
+            rules={{
+              required: '必須です',
+            }}
           />
         </FormControl>
       </Paragraph>
@@ -144,11 +160,14 @@ const ReservationForm: React.FC<PropsType> = props => {
           as={<TextField multiline label="詳細" fullWidth />}
           name="description"
           control={control}
-          rules={{ required: true }}
         />
       </Paragraph>
       <Paragraph>
-        <ActionBar onSave={onSave} onDelete={onDelete} />
+        <ActionBar
+          onSave={onSave}
+          onDelete={onDelete}
+          showDelete={!!props.reservation.id}
+        />
       </Paragraph>
     </>
   );
