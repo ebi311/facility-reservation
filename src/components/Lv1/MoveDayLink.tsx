@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
-import { Link } from '@material-ui/core';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 type PropsType = {
   direction: '前' | '後';
+  to: string;
 };
 
 const LinkButton = styled(Link)`
@@ -17,7 +18,7 @@ const MoveDayLink: React.FC<PropsType> = props => {
   } else {
     title = title + '>>';
   }
-  return <LinkButton>{title}</LinkButton>;
+  return <LinkButton to={props.to}>{title}</LinkButton>;
 };
 
 export default MoveDayLink;

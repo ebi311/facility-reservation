@@ -15,7 +15,7 @@ const Paragraph = styled.div`
   margin: 1em;
 `;
 const FacilityForm: React.FC<PropsType> = props => {
-  const { errors, control, reset, getValues } = useForm<IFacility>({
+  const { errors, control, reset, getValues, trigger } = useForm<IFacility>({
     defaultValues: props.facility,
     mode: 'onBlur',
   });
@@ -24,14 +24,16 @@ const FacilityForm: React.FC<PropsType> = props => {
   }, [props.facility, reset]);
 
   const dispatch = useDispatch();
-  const onSave = useCallback(() => {
+  const onSave = useCallback(async () => {
+    const result = await trigger();
+    if (!result) return;
     const formData = getValues();
     const saveData = {
       ...props.facility,
       ...formData,
     };
     saveFacility(saveData as IFacility, dispatch);
-  }, [getValues, props.facility, dispatch]);
+  }, [trigger, getValues, props.facility, dispatch]);
 
   const onDelete = useCallback(() => {
     if (!confirm('削除して良いですか？')) return;

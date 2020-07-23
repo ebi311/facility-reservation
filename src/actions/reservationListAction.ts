@@ -7,6 +7,8 @@ import IReservation from '../status/IReservation';
 
 const actionCreator = actionCreatorFactory('task-list');
 
+export const changeDate = actionCreator<Date>('change-date');
+
 export const loadReservationListAction = actionCreator.async<
   unknown,
   IReservation[],

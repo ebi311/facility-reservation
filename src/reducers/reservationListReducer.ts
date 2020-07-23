@@ -3,10 +3,11 @@ import ITaskListPage from '../status/IReservationListPage';
 import {
   loadReservationListAction,
   loadFacilityAction,
+  changeDate,
 } from '../actions/reservationListAction';
 
 const init: ITaskListPage = {
-  date: new Date('2020-08-01T00:00:00'),
+  date: new Date(),
   facilities: [],
   loading: false,
   reservationList: [],
@@ -25,6 +26,10 @@ const taskListReducer = reducerWithInitialState<ITaskListPage>(init)
   .case(loadFacilityAction.done, (state, _payload) => ({
     ...state,
     facilities: _payload.result,
+  }))
+  .case(changeDate, (state, payload) => ({
+    ...state,
+    date: payload,
   }))
   .build();
 

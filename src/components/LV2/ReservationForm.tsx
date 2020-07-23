@@ -1,23 +1,23 @@
 import {
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   TextField,
-  InputLabel,
-  FormControl,
 } from '@material-ui/core';
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import {
+  addReservation,
+  deleteReservation,
+  updateReservation,
+} from '../../actions/reservationDetailActions';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
 import ActionBar from './ActionBar';
-import { useDispatch } from 'react-redux';
-import {
-  addReservation,
-  updateReservation,
-  deleteReservation,
-} from '../../actions/reservationDetailActions';
 
 type PropsType = {
   reservation: IReservation;

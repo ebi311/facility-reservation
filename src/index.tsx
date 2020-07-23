@@ -17,6 +17,7 @@ setupFirebase();
 moment.locale('ja');
 
 momentUtils.prototype.getDateTimePickerHeaderText = date => date.format('M/D');
+momentUtils.prototype.getDatePickerHeaderText = date => date.format('M/D');
 
 const component = (
   <Provider store={store}>
