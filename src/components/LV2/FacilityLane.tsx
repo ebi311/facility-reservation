@@ -51,7 +51,7 @@ const Cells: React.FC<{
     </LaneCell>,
   ];
   for (let i = 8; i < 19; i++) {
-    const d = moment(props.date).set('hour', 1).startOf('hour');
+    const d = moment(props.date).set('hour', i).startOf('hour');
     const qs = queryString.stringify({
       date: d.toISOString(true),
       facilityId: facility.id,

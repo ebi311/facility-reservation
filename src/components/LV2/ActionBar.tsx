@@ -1,4 +1,5 @@
-import { Button } from '@material-ui/core';
+import { Button, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 import React from 'react';
@@ -23,18 +24,22 @@ const ActionRight = styled.div`
   flex-grow: 0;
 `;
 
+const dangerTheme = createMuiTheme({ palette: { primary: red } });
+
 const ActionBar: React.FC<PropsType> = props => {
   return (
     <Actions>
       <ActionLeft>
         {props.showDelete ? (
-          <Button
-            startIcon={<DeleteIcon />}
-            color="secondary"
-            onClick={props.onDelete}
-          >
-            削除
-          </Button>
+          <MuiThemeProvider theme={dangerTheme}>
+            <Button
+              startIcon={<DeleteIcon />}
+              color="primary"
+              onClick={props.onDelete}
+            >
+              削除
+            </Button>
+          </MuiThemeProvider>
         ) : null}
       </ActionLeft>
       <ActionRight>
