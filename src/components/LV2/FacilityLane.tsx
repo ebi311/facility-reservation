@@ -1,14 +1,11 @@
 import moment from 'moment';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
 import ResizeObserver from 'resize-observer-polyfill';
 import styled from 'styled-components';
-import { constraints } from '../../constraints';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
-import LaneCell from '../Lv1/LaneCell';
+import Cells from './FacilityCells';
 import ReservationBar from './ReservationBar';
-import queryString from 'query-string';
 
 const Row = styled.div`
   display: flex;
@@ -22,49 +19,6 @@ type PropsType = {
   facility: IFacility;
   reservations: IReservation[];
   color: string;
-};
-
-const FacilityLink = styled(Link)`
-  color: white;
-  text-decoration: none;
-`;
-
-const Cells: React.FC<{
-  facility: IFacility;
-  color: string;
-  date: Date;
-}> = props => {
-  const { facility, color } = props;
-  const history = useHistory();
-  const cells = [
-    <LaneCell
-      width={constraints.rowHeaderWidth + 'px'}
-      key="head"
-      backgroundColor={color}
-      color="white"
-    >
-      <p>
-        <FacilityLink to={`facilities/${facility.id}`}>
-          {facility.name}
-        </FacilityLink>
-      </p>
-    </LaneCell>,
-  ];
-  for (let i = 8; i < 19; i++) {
-    const d = moment(props.date).set('hour', i).startOf('hour');
-    const qs = queryString.stringify({
-      date: d.toISOString(true),
-      facilityId: facility.id,
-    });
-    cells.push(
-      <LaneCell
-        key={facility.id + i}
-        className={i === 8 ? 'first' : ''}
-        onClick={() => history.push('/reservations/?' + qs)}
-      ></LaneCell>,
-    );
-  }
-  return <>{cells}</>;
 };
 
 const createReservationRows = (

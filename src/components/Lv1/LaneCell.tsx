@@ -28,7 +28,9 @@ const Cell = styled.div<PropsType>`
   width: ${p => p.width || 'auto'};
   &:hover {
     background-color: ${p =>
-      p.onClick ? theme.palette.primary.light : 'inherit'};
+      p.onClick
+        ? theme.palette.primary.light
+        : p => p.backgroundColor || 'white'};
   }
 `;
 
