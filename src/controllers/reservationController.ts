@@ -1,10 +1,12 @@
 import { Moment } from 'moment';
 import superagent from 'superagent';
 import IReservation from '../status/IReservation';
+import moment from 'moment';
 
 export const getReservations = async (date: Date): Promise<IReservation[]> => {
+  const mDate = moment(date).startOf('day');
   const result = await superagent.get('/api/reservations/').query({
-    date: date.toISOString(),
+    date: mDate.toISOString(),
   });
   return result.body as IReservation[];
 };

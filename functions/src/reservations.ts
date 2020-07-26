@@ -5,9 +5,9 @@ import {
 } from '@google-cloud/firestore';
 import express from 'express';
 import { Request, Response } from 'express-serve-static-core';
+import { body, CustomValidator, validationResult } from 'express-validator';
 import moment, { Moment } from 'moment';
 import IReservation from './status/IReservation';
-import { body, validationResult, CustomValidator } from 'express-validator';
 
 const firestore = new Firestore();
 
@@ -22,11 +22,10 @@ type DateQueryType = {
 const getReservationList = async (_startDate: Moment) => {
   const startDate = moment(_startDate);
   const endDate = moment(startDate);
-  startDate.startOf('day');
-  endDate.endOf('day');
+  endDate.add(24, 'hours');
   const docsRef = getCollection()
     .where('startDate', '>=', startDate.toDate())
-    .where('startDate', '<=', endDate.toDate());
+    .where('startDate', '<', endDate.toDate());
   const docsSnapshot = await docsRef.get();
   return docsSnapshot.docs.map(a => ({ ...a.data(), id: a.id }));
 };
@@ -111,10 +110,12 @@ const _private = {
     if (!oldDoc) {
       return res.status(404).end();
     }
-    const doc = {
+    const doc: IReservation = {
       ...oldDoc,
       ...req.body,
     };
+    doc.startDate = moment(doc.startDate);
+    doc.endDate = moment(doc.endDate);
     await getCollection().doc(id).set(doc);
     const updatedDocSnapshot = await getCollection().doc(id).get();
     res.send(updatedDocSnapshot.data()).end();
