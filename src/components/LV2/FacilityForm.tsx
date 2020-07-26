@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { deleteFacility, saveFacility } from '../../actions/facilityActions';
 import IFacility from '../../status/IFacility';
 import ActionBar from './ActionBar';
+import { useHistory } from 'react-router';
 
 type PropsType = {
   facility: IFacility;
@@ -19,6 +20,7 @@ const FacilityForm: React.FC<PropsType> = props => {
     defaultValues: props.facility,
     mode: 'onBlur',
   });
+  const history = useHistory();
   useEffect(() => {
     reset(props.facility);
   }, [props.facility, reset]);
@@ -32,13 +34,15 @@ const FacilityForm: React.FC<PropsType> = props => {
       ...props.facility,
       ...formData,
     };
-    saveFacility(saveData as IFacility, dispatch);
-  }, [trigger, getValues, props.facility, dispatch]);
+    await saveFacility(saveData as IFacility, dispatch);
+    history.push('/');
+  }, [trigger, getValues, props.facility, dispatch, history]);
 
   const onDelete = useCallback(() => {
     if (!confirm('削除して良いですか？')) return;
     deleteFacility(props.facility.id, dispatch);
-  }, [dispatch, props.facility.id]);
+    history.goBack();
+  }, [dispatch, history, props.facility.id]);
 
   return (
     <>
@@ -62,7 +66,6 @@ const FacilityForm: React.FC<PropsType> = props => {
           as={<TextField multiline label="詳細" fullWidth />}
           name="description"
           control={control}
-          rules={{ required: true }}
         />
       </Paragraph>
       <ActionBar

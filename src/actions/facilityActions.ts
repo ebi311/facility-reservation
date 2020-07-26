@@ -1,4 +1,3 @@
-import { push } from 'connected-react-router';
 import { Dispatch } from 'redux';
 import { actionCreatorFactory } from 'typescript-fsa';
 import {
@@ -40,7 +39,6 @@ export const saveFacility = async (
   promise
     .then(() => {
       dispatch(saveFacilityAction.done({ params: null, result: null }));
-      dispatch(push('/'));
     })
     .catch(() => {
       dispatch(saveFacilityAction.failed({ params: null, error: {} }));
@@ -59,7 +57,6 @@ export const deleteFacility = async (
   const result = await deleteFacilityById(id);
   if (result) {
     dispatch(deleteFacilityAction.done({ params: null, result: null }));
-    dispatch(push('/'));
   } else {
     dispatch(deleteFacilityAction.failed({ params: null, error: {} }));
   }

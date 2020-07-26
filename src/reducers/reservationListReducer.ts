@@ -23,8 +23,13 @@ const taskListReducer = reducerWithInitialState<ITaskListPage>(init)
     loading: false,
     reservationList: payload.result,
   }))
+  .case(loadFacilityAction.started, state => ({
+    ...state,
+    loading: true,
+  }))
   .case(loadFacilityAction.done, (state, _payload) => ({
     ...state,
+    loading: false,
     facilities: _payload.result,
   }))
   .case(changeDate, (state, payload) => ({

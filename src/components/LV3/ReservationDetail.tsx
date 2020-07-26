@@ -43,9 +43,9 @@ const ReservationDetail: React.FC<PropsType> = props => {
   > => {
     const qs = queryString.parse(location.search);
     return {
-      startDate: qs.date ? moment(qs.date).startOf('hour').toDate() : undefined,
+      startDate: qs.date ? moment(qs.date).startOf('hour') : undefined,
       endDate: qs.date
-        ? moment(qs.date).add(1, 'hour').startOf('hour').toDate()
+        ? moment(qs.date).add(1, 'hour').startOf('hour')
         : undefined,
       facilityId: qs.facilityId ? `facilities/${qs.facilityId}` : undefined,
     };
@@ -65,7 +65,7 @@ const ReservationDetail: React.FC<PropsType> = props => {
   }, [dispatch, id, queryParams]);
 
   const history = useHistory();
-  const onClose = useCallback(() => history.push('/'), [history]);
+  const onClose = useCallback(() => history.goBack(), [history]);
 
   const form = useMemo(
     () => <ReservationForm reservation={reservation} facilities={facilities} />,

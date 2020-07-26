@@ -23,6 +23,6 @@ const reducer = combineReducers<StateType>({
   router: connectRouter(history),
 });
 
-const state = createStore(reducer, applyMiddleware(routerMiddleware(history)));
+const store = createStore(reducer, applyMiddleware(routerMiddleware(history)));
 
-export default state;
+export default store;

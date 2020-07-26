@@ -6,6 +6,7 @@ import {
 } from '../actions/reservationDetailActions';
 import IReservationPage from '../status/IReservationDetailPage';
 import { createInitSystem } from '../status/ISystem';
+import moment from 'moment';
 
 const init: IReservationPage = {
   reservation: {
@@ -13,8 +14,8 @@ const init: IReservationPage = {
     facilityId: '',
     subject: '',
     description: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: moment(),
+    endDate: moment(),
     system: createInitSystem(),
   },
   loading: false,
@@ -34,7 +35,7 @@ const reservationDetailReducer = reducerWithInitialState<IReservationPage>(init)
     ...state,
     loading: true,
   }))
-  .case(asyncProcessAction.started, state => ({
+  .case(asyncProcessAction.done, state => ({
     ...state,
     loading: false,
   }))

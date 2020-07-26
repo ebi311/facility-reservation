@@ -1,13 +1,12 @@
 import { Dispatch } from 'redux';
 import actionCreatorFactory from 'typescript-fsa';
 import {
+  deleteReservation as deleteReservationById,
   getReservationById,
   postReservation,
   putReservation,
-  deleteReservation as deleteReservationById,
 } from '../controllers/reservationController';
 import IReservation from '../status/IReservation';
-import { push } from 'connected-react-router';
 
 const actionCreator = actionCreatorFactory('reservation-detail');
 
@@ -41,7 +40,6 @@ export const addReservation = async (
   dispatch(asyncProcessAction.started({}));
   await postReservation(data);
   dispatch(asyncProcessAction.done({ params: {}, result: {} }));
-  dispatch(push('/'));
 };
 
 export const updateReservation = async (
@@ -51,7 +49,6 @@ export const updateReservation = async (
   dispatch(asyncProcessAction.started({}));
   await putReservation(data);
   dispatch(asyncProcessAction.done({ params: {}, result: {} }));
-  dispatch(push('/'));
 };
 
 export const deleteReservation = async (
@@ -61,7 +58,6 @@ export const deleteReservation = async (
   dispatch(asyncProcessAction.started({}));
   await deleteReservationById(id);
   dispatch(asyncProcessAction.done({ params: {}, result: {} }));
-  dispatch(push('/'));
 };
 
 /**

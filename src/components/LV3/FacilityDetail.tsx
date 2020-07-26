@@ -49,7 +49,7 @@ const FacilityDetail: React.FC<PropsType> = props => {
   }, [dispatch, props.match.params]);
 
   const history = useHistory();
-  const onClose = useCallback(() => history.push('/'), [history]);
+  const onClose = useCallback(() => history.goBack(), [history]);
 
   const form = useMemo(
     () => (
