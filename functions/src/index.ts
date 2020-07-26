@@ -1,11 +1,11 @@
+import { Timestamp } from '@google-cloud/firestore';
 import express from 'express';
 import * as functions from 'firebase-functions';
+import morgan from 'morgan';
 // import auth from './auth';
 import facilities from './facilities';
 import reservations from './reservations';
 import samples from './samples';
-import { Timestamp } from '@google-cloud/firestore';
-import morgan from 'morgan';
 
 // import session from 'express-session';
 
@@ -14,7 +14,7 @@ const app = express();
 app.use(morgan('dev'));
 
 app.set('json replacer', (key: string, value: never) => {
-  if (typeof value['toDate'] !== 'function') return value;
+  if (!value || typeof value['toDate'] !== 'function') return value;
   return (value as Timestamp).toDate().toISOString();
 });
 

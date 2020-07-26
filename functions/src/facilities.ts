@@ -1,13 +1,12 @@
 import {
-  CollectionReference,
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
   Firestore,
   FirestoreDataConverter,
-  Query,
 } from '@google-cloud/firestore';
 import express, { Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
 import IFacility from './status/IFacility';
 
 const firestore = new Firestore();
@@ -33,7 +32,7 @@ const converter: FirestoreDataConverter<IFacility> = {
 const getCollection = () =>
   firestore.collection(collectionName).withConverter(converter);
 
-const getDocById = async (
+export const getDocById = async (
   id: string,
 ): Promise<
   [
@@ -62,15 +61,7 @@ export const __private = {
     res.json(data);
   },
   get: async (req: Request, res: Response): Promise<void> => {
-    let query:
-      | CollectionReference<IFacility>
-      | Query<IFacility> = getCollection();
-    if (req.query.name) {
-      query = query
-        .where('name', '>=', req.query.name)
-        .where('name', '<=', req.query.name + '\uf8ff');
-    }
-    const snapshots = await query.get();
+    const snapshots = await getCollection().get();
     const result: unknown[] = [];
     snapshots.forEach(snapshot => {
       const data = snapshot.data();
@@ -81,6 +72,10 @@ export const __private = {
   },
   post: async (req: Request, res: Response): Promise<void> => {
     // const user = firebase.auth().currentUser;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ errors: errors.array() }).end();
+    }
     const now = new Date();
     const addData: IFacility = {
       ...req.body,
@@ -105,6 +100,10 @@ export const __private = {
   },
   put: async (req: Request<IdParamType>, res: Response): Promise<void> => {
     // const user = firebase.auth().currentUser;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ errors: errors.array() }).end();
+    }
     const now = new Date();
     const [oldData, , docRef] = await getDocById(req.params.id);
     if (!oldData) {
@@ -141,9 +140,17 @@ app.get('/:id', __private.getById);
 
 app.get('/', __private.get);
 
-app.post('/', __private.post);
+app.post(
+  '/',
+  [body('name').notEmpty().withMessage('必須です')],
+  __private.post,
+);
 
-app.put('/:id', __private.put);
+app.put(
+  '/:id',
+  [body('name').notEmpty().optional().withMessage('必須です。')],
+  __private.put,
+);
 
 app.delete('/:id', __private.delete);
 

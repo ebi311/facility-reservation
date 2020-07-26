@@ -1,8 +1,13 @@
-import { Firestore, FirestoreDataConverter } from '@google-cloud/firestore';
+import {
+  Firestore,
+  FirestoreDataConverter,
+  Timestamp,
+} from '@google-cloud/firestore';
 import express from 'express';
 import { Request, Response } from 'express-serve-static-core';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import IReservation from './status/IReservation';
+import { body, validationResult, CustomValidator } from 'express-validator';
 
 const firestore = new Firestore();
 
@@ -14,19 +19,35 @@ type DateQueryType = {
   date: string;
 };
 
+const getReservationList = async (_startDate: Moment) => {
+  const startDate = moment(_startDate);
+  const endDate = moment(startDate);
+  startDate.startOf('day');
+  endDate.endOf('day');
+  const docsRef = getCollection()
+    .where('startDate', '>=', startDate.toDate())
+    .where('startDate', '<=', endDate.toDate());
+  const docsSnapshot = await docsRef.get();
+  return docsSnapshot.docs.map(a => ({ ...a.data(), id: a.id }));
+};
+
 const app = express();
 
 const collectionName = 'reservations';
 
 const converter: FirestoreDataConverter<IReservation> = {
   fromFirestore: data => {
-    return data as IReservation;
+    const fromData = { ...data, startDate: moment(), endDate: moment() };
+    fromData.startDate = moment((data.startDate as Timestamp).toDate());
+    fromData.endDate = moment((data.endDate as Timestamp).toDate());
+    return fromData as IReservation;
   },
   toFirestore: obj => {
-    delete obj.id;
-    obj.startDate = new Date(obj.startDate);
-    obj.endDate = new Date(obj.endDate);
-    return obj;
+    const toObj = { ...obj, startDate: new Date(), endDate: new Date() };
+    delete toObj.id;
+    toObj.startDate = obj.startDate.toDate();
+    toObj.endDate = obj.endDate.toDate();
+    return toObj;
   },
 };
 
@@ -51,30 +72,28 @@ const _private = {
     if (!startDate.isValid()) {
       return res.status(400).end();
     }
-    const endDate = moment(startDate);
-    startDate.startOf('day');
-    endDate.endOf('day');
-    try {
-      const docsRef = getCollection()
-        .where('startDate', '>=', startDate.toDate())
-        .where('startDate', '<=', endDate.toDate());
-      const docsSnapshot = await docsRef.get();
-      const docs = docsSnapshot.docs.map(a => ({ ...a.data(), id: a.id }));
-      res.send(docs).end();
-    } catch (e) {
-      console.error(e);
-      return res.status(500).send(e).end();
-    }
+    const docs = await getReservationList(startDate).catch(e => {
+      res.status(500).send(e).end();
+    });
+    if (!docs) return;
+    res.send(docs).end();
   },
   post: async (
     req: Request<never, IReservation, IReservation, never>,
     res: Response,
   ) => {
-    const newDoc = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).send({ errors: errors.array() }).end();
+    }
+
+    const newDoc = { ...req.body };
+    newDoc.startDate = moment(req.body.startDate);
+    newDoc.endDate = moment(req.body.endDate);
     newDoc.system = {
-      createDate: new Date(),
+      createDate: moment(),
       createUser: '',
-      lastUpdate: new Date(),
+      lastUpdate: moment(),
       lastUpdateUser: '',
     };
     const result = await getCollection().add(newDoc);
@@ -109,9 +128,60 @@ const _private = {
     return res.status(204).send().end();
   },
 };
+
+const getDuplicate = (
+  reservations: IReservation[],
+  facilityId: string,
+  reservationId: string,
+  endDate: Moment,
+  startDate: Moment,
+) => {
+  const exist = reservations
+    .filter(f => {
+      return f.facilityId === facilityId;
+    })
+    .find(f => {
+      if (reservationId === f.id) return false;
+      if (endDate <= f.startDate) return false;
+      if (startDate >= f.endDate) return false;
+      return true;
+    });
+  console.log('exist: ' + !!exist);
+  return exist;
+};
+
+const isVacant: CustomValidator = async (value: string, { req }) => {
+  const startDate = moment(value);
+  const body = req.body as IReservation;
+  const endDate = moment(body.endDate);
+  const reservationId = body.id;
+  const facilityId = body.facilityId;
+  const reservations = await getReservationList(startDate);
+  if (!reservations) return;
+  // 重複している他の予約を検索する
+  const result = getDuplicate(
+    reservations,
+    facilityId,
+    reservationId,
+    endDate,
+    startDate,
+  );
+  // 他の予約が見つかったら重複しているので、`false`を返す
+  if (!!result) throw new Error('重複しています。');
+};
+
 app.get('/:id', _private.getById);
 app.get('/', _private.get);
-app.post('/', _private.post);
+app.post(
+  '/',
+  [
+    body('subject').notEmpty().withMessage('必須です。'),
+    body('facilityId').notEmpty().withMessage('必須です。'),
+    body('startDate').isISO8601().custom(isVacant),
+    body('endDate').isISO8601(),
+  ],
+  _private.post,
+);
 app.put('/:id', _private.put);
 app.delete('/:id', _private.delete);
 

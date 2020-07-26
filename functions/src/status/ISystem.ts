@@ -1,13 +1,16 @@
+import { Moment } from 'moment';
+import moment from 'moment';
+
 export default interface ISystem {
-  createDate: Date;
-  lastUpdate: Date;
+  createDate: Moment;
+  lastUpdate: Moment;
   createUser: string;
   lastUpdateUser: string;
 }
 
 export const createInitSystem = (): ISystem => ({
-  createDate: new Date(0),
+  createDate: moment(0),
   createUser: '',
-  lastUpdate: new Date(0),
+  lastUpdate: moment(0),
   lastUpdateUser: '',
 });
