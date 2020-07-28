@@ -69,9 +69,9 @@ const save = async (
     ...inputData,
   };
   if (!defaultValue.id) {
-    addReservation(data, dispatch);
+    return await addReservation(data, dispatch);
   } else {
-    updateReservation(data, dispatch);
+    return await updateReservation(data, dispatch);
   }
 };
 
@@ -101,11 +101,11 @@ const ReservationForm: React.FC<PropsType> = props => {
   }, [getValues, reservation]);
 
   const onSave = useCallback(async () => {
-    const result = await trigger();
-    if (!result) return;
+    const checkResult = await trigger();
+    if (!checkResult) return;
     const inputData = getValues() as Partial<IReservation>;
-    await save(inputData, reservation, dispatch);
-    history.push('/?date=' + startDate.format('YYYY-MM-DD'));
+    const saveResult = await save(inputData, reservation, dispatch);
+    if (saveResult) history.push('/?date=' + startDate.format('YYYY-MM-DD'));
   }, [dispatch, getValues, history, reservation, startDate, trigger]);
 
   const onDelete = useCallback(() => {

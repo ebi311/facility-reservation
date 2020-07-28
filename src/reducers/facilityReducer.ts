@@ -16,6 +16,7 @@ const init: IFacilityPage = {
     system: createInitSystem(),
   },
   loading: false,
+  errorMessage: '',
 };
 
 const facilityReducer = reducerWithInitialState<IFacilityPage>(init)

@@ -1,9 +1,10 @@
-import IFacility from '../status/IFacility';
 import superagent from 'superagent';
+import IFacility from '../status/IFacility';
 // import URL from 'url';
 
 export const getFacilities = async (): Promise<IFacility[]> => {
   const result = await superagent.get('/api/facilities/').catch(e => {
+    console.error(e);
     throw e;
   });
   return result.body as IFacility[];

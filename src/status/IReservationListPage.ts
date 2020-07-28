@@ -6,4 +6,5 @@ export default interface ITaskListPage {
   facilities: IFacility[];
   date: Date;
   loading: boolean;
+  errorMessage?: string;
 }

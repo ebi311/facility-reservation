@@ -23,41 +23,63 @@ export const loadReservation = async (
   // 読み込みの開始
   dispatch(loadReservationAction.started(null));
   // 非同期での読み込み
-  const reservation = await getReservationById(id);
+  const reservation = await getReservationById(id).catch(() => {
+    dispatch(loadReservationAction.failed({ params: null, error: null }));
+  });
+  if (!reservation) return;
   dispatch(loadReservationAction.done({ params: null, result: reservation }));
 };
 
-export const asyncProcessAction = actionCreator.async<
-  unknown,
-  unknown,
-  unknown
->('add-reservation');
+export const asyncProcessAction = actionCreator.async<null, null, null>(
+  'add-reservation',
+);
 
 export const addReservation = async (
   data: IReservation,
   dispatch: Dispatch,
-): Promise<void> => {
-  dispatch(asyncProcessAction.started({}));
-  await postReservation(data);
-  dispatch(asyncProcessAction.done({ params: {}, result: {} }));
+): Promise<boolean> => {
+  dispatch(asyncProcessAction.started(null));
+  return postReservation(data)
+    .then(() => {
+      dispatch(asyncProcessAction.done({ params: null, result: null }));
+      return true;
+    })
+    .catch(() => {
+      dispatch(asyncProcessAction.failed({ params: null, error: null }));
+      return false;
+    });
 };
 
 export const updateReservation = async (
   data: Partial<IReservation>,
   dispatch: Dispatch,
-): Promise<void> => {
-  dispatch(asyncProcessAction.started({}));
-  await putReservation(data);
-  dispatch(asyncProcessAction.done({ params: {}, result: {} }));
+): Promise<boolean> => {
+  dispatch(asyncProcessAction.started(null));
+  return putReservation(data)
+    .then(() => {
+      dispatch(asyncProcessAction.done({ params: null, result: null }));
+      return true;
+    })
+    .catch(() => {
+      dispatch(asyncProcessAction.failed({ params: null, error: null }));
+      return false;
+    });
 };
 
 export const deleteReservation = async (
   id: string,
   dispatch: Dispatch,
-): Promise<void> => {
-  dispatch(asyncProcessAction.started({}));
-  await deleteReservationById(id);
-  dispatch(asyncProcessAction.done({ params: {}, result: {} }));
+): Promise<boolean> => {
+  dispatch(asyncProcessAction.started(null));
+  return deleteReservationById(id)
+    .then(() => {
+      dispatch(asyncProcessAction.done({ params: null, result: null }));
+      return true;
+    })
+    .catch(() => {
+      dispatch(asyncProcessAction.failed({ params: null, error: null }));
+      return false;
+    });
 };
 
 /**

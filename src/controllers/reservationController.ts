@@ -5,21 +5,36 @@ import moment from 'moment';
 
 export const getReservations = async (date: Date): Promise<IReservation[]> => {
   const mDate = moment(date).startOf('day');
-  const result = await superagent.get('/api/reservations/').query({
-    date: mDate.toISOString(),
-  });
+  const result = await superagent
+    .get('/api/reservations/')
+    .query({
+      date: mDate.toISOString(),
+    })
+    .catch(e => {
+      console.error(e);
+      throw e;
+    });
   return result.body as IReservation[];
 };
 
 export const getReservationById = async (id: string): Promise<IReservation> => {
-  const result = await superagent.get('/api/reservations/' + id);
+  const result = await superagent.get('/api/reservations/' + id).catch(e => {
+    console.error(e);
+    throw e;
+  });
   return result.body as IReservation;
 };
 
 export const postReservation = async (
   data: IReservation,
 ): Promise<IReservation> => {
-  const result = await superagent.post('/api/reservations/').send(data);
+  const result = await superagent
+    .post('/api/reservation/')
+    .send(data)
+    .catch(e => {
+      console.error(e);
+      throw e;
+    });
   return result.body as IReservation;
 };
 
@@ -28,7 +43,11 @@ export const putReservation = async (
 ): Promise<IReservation> => {
   const result = await superagent
     .put('/api/reservations/' + (data.id || ''))
-    .send(data);
+    .send(data)
+    .catch(e => {
+      console.error(e);
+      throw e;
+    });
   return result.body as IReservation;
 };
 

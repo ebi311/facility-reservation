@@ -27,21 +27,21 @@ const FacilityForm: React.FC<PropsType> = props => {
 
   const dispatch = useDispatch();
   const onSave = useCallback(async () => {
-    const result = await trigger();
-    if (!result) return;
+    const checkResult = await trigger();
+    if (!checkResult) return;
     const formData = getValues();
     const saveData = {
       ...props.facility,
       ...formData,
     };
-    await saveFacility(saveData as IFacility, dispatch);
-    history.push('/');
+    const saveResult = await saveFacility(saveData as IFacility, dispatch);
+    if (saveResult) history.push('/');
   }, [trigger, getValues, props.facility, dispatch, history]);
 
   const onDelete = useCallback(() => {
     if (!confirm('削除して良いですか？')) return;
-    deleteFacility(props.facility.id, dispatch);
-    history.goBack();
+    const result = deleteFacility(props.facility.id, dispatch);
+    if (result) history.goBack();
   }, [dispatch, history, props.facility.id]);
 
   return (

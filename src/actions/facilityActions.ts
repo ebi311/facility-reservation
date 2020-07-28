@@ -33,15 +33,17 @@ export const saveFacilityAction = actionCreator.async<null, null, unknown>(
 export const saveFacility = async (
   facility: IFacility,
   dispatch: Dispatch,
-): Promise<void> => {
+): Promise<boolean> => {
   dispatch(saveFacilityAction.started(null));
   const promise = !facility.id ? postFacility(facility) : putFacility(facility);
-  promise
+  return promise
     .then(() => {
       dispatch(saveFacilityAction.done({ params: null, result: null }));
+      return true;
     })
     .catch(() => {
       dispatch(saveFacilityAction.failed({ params: null, error: {} }));
+      return false;
     });
 };
 
@@ -52,12 +54,15 @@ export const deleteFacilityAction = actionCreator.async<null, null, unknown>(
 export const deleteFacility = async (
   id: string,
   dispatch: Dispatch,
-): Promise<void> => {
+): Promise<boolean> => {
   dispatch(deleteFacilityAction.started(null));
-  const result = await deleteFacilityById(id);
-  if (result) {
-    dispatch(deleteFacilityAction.done({ params: null, result: null }));
-  } else {
-    dispatch(deleteFacilityAction.failed({ params: null, error: {} }));
-  }
+  return deleteFacilityById(id)
+    .then(() => {
+      dispatch(deleteFacilityAction.done({ params: null, result: null }));
+      return true;
+    })
+    .catch(() => {
+      dispatch(deleteFacilityAction.failed({ params: null, error: {} }));
+      return false;
+    });
 };

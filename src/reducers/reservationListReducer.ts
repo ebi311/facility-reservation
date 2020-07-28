@@ -17,20 +17,34 @@ const taskListReducer = reducerWithInitialState<ITaskListPage>(init)
   .case(loadReservationListAction.done, (state, _payload) => ({
     ...state,
     loading: true,
+    errorMessage: '',
   }))
   .case(loadReservationListAction.done, (state, payload) => ({
     ...state,
     loading: false,
     reservationList: payload.result,
+    errorMessage: '',
+  }))
+  .case(loadReservationListAction.failed, state => ({
+    ...state,
+    loading: false,
+    errorMessage: '予約一覧の読み込みに失敗しました。',
   }))
   .case(loadFacilityAction.started, state => ({
     ...state,
     loading: true,
+    errorMessage: '',
   }))
   .case(loadFacilityAction.done, (state, _payload) => ({
     ...state,
     loading: false,
     facilities: _payload.result,
+    errorMessage: '',
+  }))
+  .case(loadFacilityAction.failed, state => ({
+    ...state,
+    loading: false,
+    errorMessage: '施設の読み込みに失敗しました。',
   }))
   .case(changeDate, (state, payload) => ({
     ...state,

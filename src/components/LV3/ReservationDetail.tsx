@@ -17,6 +17,7 @@ import IState from '../../status/IState';
 import FormHeader from '../LV2/FormHeader';
 import ReservationForm from '../LV2/ReservationForm';
 import IReservation from '../../status/IReservation';
+import { Alert } from '@material-ui/lab';
 
 type PropsType = RouteComponentProps<{ id: string }>;
 
@@ -36,7 +37,7 @@ const ReservationDetail: React.FC<PropsType> = props => {
   const facilities = useSelector<IState, IFacility[]>(
     s => s.reservationList.facilities,
   );
-  const { reservation, loading } = storeState;
+  const { reservation, loading, errorMessage } = storeState;
 
   const queryParams = useMemo<Partial<IReservation>>((): Partial<
     IReservation
@@ -72,10 +73,16 @@ const ReservationDetail: React.FC<PropsType> = props => {
     [reservation, facilities],
   );
 
+  const alert = useMemo(() => {
+    if (!errorMessage) return null;
+    return <Alert severity="error">{errorMessage}</Alert>;
+  }, [errorMessage]);
+
   return (
     <Container maxWidth="sm">
       <FormHeader onCloseClick={onClose} />
       {loading ? <Loading type="spin" color="#aaa" /> : form}
+      {alert}
     </Container>
   );
 };

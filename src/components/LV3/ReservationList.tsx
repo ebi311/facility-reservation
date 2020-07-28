@@ -15,7 +15,7 @@ import DayHeader from '../LV2/DayHeader';
 import FacilityLane from '../LV2/FacilityLane';
 import Actions from '../LV2/PageActions';
 import TimeLaneHeader from '../LV2/TimeLaneHeader';
-
+import { Alert } from '@material-ui/lab';
 const Container = styled.div`
   background-color: white;
   border-radius: 10px;
@@ -68,12 +68,17 @@ const ReservationList: React.FC = () => {
     ));
   }, [state.date, state.facilities, state.reservationList]);
 
+  const errorMessage = useMemo(() => {
+    if (!state.errorMessage) return null;
+    return <Alert severity="error">{state.errorMessage}</Alert>;
+  }, [state.errorMessage]);
   return (
     <Container>
       <DayHeader date={state.date} />
       <ActionsRow />
       <TimeLaneHeader />
       <ListRow>{list}</ListRow>
+      {errorMessage}
     </Container>
   );
 };
