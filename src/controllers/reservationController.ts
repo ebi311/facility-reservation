@@ -1,7 +1,6 @@
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import superagent from 'superagent';
 import IReservation from '../status/IReservation';
-import moment from 'moment';
 
 export const getReservations = async (date: Date): Promise<IReservation[]> => {
   const mDate = moment(date).startOf('day');

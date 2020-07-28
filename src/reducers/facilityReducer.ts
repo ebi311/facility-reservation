@@ -1,9 +1,9 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
   clearFacilityAction,
+  deleteFacilityAction,
   loadFacilityAction,
   saveFacilityAction,
-  deleteFacilityAction,
 } from '../actions/facilityActions';
 import IFacilityPage from '../status/IFacilityPage';
 import { createInitSystem } from '../status/ISystem';

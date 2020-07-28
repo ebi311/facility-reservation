@@ -1,5 +1,5 @@
-import IReservation from './IReservation';
 import IFacility from './IFacility';
+import IReservation from './IReservation';
 
 export default interface ITaskListPage {
   reservationList: IReservation[];

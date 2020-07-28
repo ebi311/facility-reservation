@@ -6,9 +6,13 @@ import {
   TextField,
 } from '@material-ui/core';
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
+import moment, { Moment } from 'moment';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { FieldError } from 'react-hook-form/dist/types/form';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { Dispatch } from 'redux';
 import styled from 'styled-components';
 import {
   addReservation,
@@ -19,11 +23,6 @@ import { isVacant } from '../../controllers/reservationController';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
 import ActionBar from './ActionBar';
-import { Dispatch } from 'redux';
-import { FieldError } from 'react-hook-form/dist/types/form';
-import { Moment } from 'moment';
-import moment from 'moment';
-import { useHistory } from 'react-router';
 
 type PropsType = {
   reservation: IReservation;

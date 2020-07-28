@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, RouteComponentProps } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router';
 import FacilityDetail from './components/LV3/FacilityDetail';
 import Login from './components/LV3/Login';
 import ReservationDetail from './components/LV3/ReservationDetail';

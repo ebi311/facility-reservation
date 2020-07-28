@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 type PropsType = {
   direction: '前' | '後';

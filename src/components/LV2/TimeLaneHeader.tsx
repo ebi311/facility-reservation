@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import LaneCell from '../Lv1/LaneCell';
 import styled from 'styled-components';
 import { constraints } from '../../constraints';
+import LaneCell from '../Lv1/LaneCell';
 
 const Row = styled.div`
   display: flex;

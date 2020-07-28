@@ -2,11 +2,11 @@ import { TextField } from '@material-ui/core';
 import React, { useCallback, useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import { deleteFacility, saveFacility } from '../../actions/facilityActions';
 import IFacility from '../../status/IFacility';
 import ActionBar from './ActionBar';
-import { useHistory } from 'react-router';
 
 type PropsType = {
   facility: IFacility;

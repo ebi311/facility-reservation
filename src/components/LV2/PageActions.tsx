@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
 import { Button } from '@material-ui/core';
-import styled from 'styled-components';
-import { useHistory } from 'react-router';
-import { clearFacilityAction } from '../../actions/facilityActions';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import styled from 'styled-components';
+import { clearFacilityAction } from '../../actions/facilityActions';
 
 const Row = styled.div`
   display: flex;

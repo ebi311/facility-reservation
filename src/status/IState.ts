@@ -1,6 +1,6 @@
 import IFacilityPage from './IFacilityPage';
-import IReservationListPage from './IReservationListPage';
 import IReservationDetailPage from './IReservationDetailPage';
+import IReservationListPage from './IReservationListPage';
 
 export default interface IState {
   reservationList: IReservationListPage;

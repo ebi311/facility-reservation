@@ -1,4 +1,5 @@
 import { Container as ContainerOriginal } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import moment from 'moment';
 import queryString from 'query-string';
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -12,12 +13,11 @@ import {
 } from '../../actions/reservationDetailActions';
 import { loadFacilityList } from '../../actions/reservationListAction';
 import IFacility from '../../status/IFacility';
+import IReservation from '../../status/IReservation';
 import IReservationPage from '../../status/IReservationDetailPage';
 import IState from '../../status/IState';
 import FormHeader from '../LV2/FormHeader';
 import ReservationForm from '../LV2/ReservationForm';
-import IReservation from '../../status/IReservation';
-import { Alert } from '@material-ui/lab';
 
 type PropsType = RouteComponentProps<{ id: string }>;
 

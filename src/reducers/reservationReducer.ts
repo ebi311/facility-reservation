@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
   asyncProcessAction,
@@ -6,7 +7,6 @@ import {
 } from '../actions/reservationDetailActions';
 import IReservationPage from '../status/IReservationDetailPage';
 import { createInitSystem } from '../status/ISystem';
-import moment from 'moment';
 
 const init: IReservationPage = {
   reservation: {

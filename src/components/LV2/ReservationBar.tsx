@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
-import IReservation from '../../status/IReservation';
 import moment from 'moment';
-import { constraints } from '../../constraints';
-import { useHistory } from 'react-router';
 import { lighten } from 'polished';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router';
+import styled from 'styled-components';
+import { constraints } from '../../constraints';
+import IReservation from '../../status/IReservation';
 
 type PropsType = {
   reservation: IReservation;

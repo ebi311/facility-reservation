@@ -1,10 +1,10 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import ITaskListPage from '../status/IReservationListPage';
 import {
-  loadReservationListAction,
-  loadFacilityAction,
   changeDate,
+  loadFacilityAction,
+  loadReservationListAction,
 } from '../actions/reservationListAction';
+import ITaskListPage from '../status/IReservationListPage';
 
 const init: ITaskListPage = {
   date: new Date(),
