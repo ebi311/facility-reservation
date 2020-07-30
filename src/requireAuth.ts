@@ -8,8 +8,12 @@ export const requireAuth = async (): Promise<void> => {
     .signInWithPopup(provider)
     .then(value => {
       // Serverにトークンを送信
-      token = value.credential as firebase.auth.OAuthCredential;
-      console.log(token);
+      firebase
+        .auth()
+        .currentUser?.getIdToken()
+        .then(t => {
+          console.log(t);
+        });
     })
     .catch(e => {
       console.error('auth error.');

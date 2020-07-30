@@ -28,7 +28,7 @@ export const postReservation = async (
   data: IReservation,
 ): Promise<IReservation> => {
   const result = await superagent
-    .post('/api/reservation/')
+    .post('/api/reservations/')
     .send(data)
     .catch(e => {
       console.error(e);

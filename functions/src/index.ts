@@ -2,12 +2,15 @@ import { Timestamp } from '@google-cloud/firestore';
 import express from 'express';
 import * as functions from 'firebase-functions';
 import morgan from 'morgan';
+import auth from './auth';
 // import auth from './auth';
 import facilities from './facilities';
+import { setupFirebase } from './firebaseConfiguration';
 import reservations from './reservations';
 import samples from './samples';
-
 // import session from 'express-session';
+
+setupFirebase();
 
 const app = express();
 
@@ -28,7 +31,7 @@ app.set('json replacer', (key: string, value: never) => {
 //     saveUninitialized: false,
 //   }),
 // );
-// app.use(auth);
+app.use('/api/auth/', auth);
 app.use('/api/facilities/', facilities);
 app.use('/api/reservations/', reservations);
 app.get('/api/version/', (req, res) => {
