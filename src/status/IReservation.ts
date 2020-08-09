@@ -1,12 +1,12 @@
 import ISystem from './ISystem';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 
 export default interface IReservation {
   id: string;
   subject: string;
   facilityId: string;
   description?: string;
-  startDate: Moment;
-  endDate: Moment;
+  startDate: Dayjs;
+  endDate: Dayjs;
   system: ISystem;
 }

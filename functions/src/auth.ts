@@ -1,9 +1,10 @@
 import express, { Request } from 'express';
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin';
+import { CustomReqType } from './CustomRequest';
 
 const app = express();
 
-const getIdToken = (req: Request) => {
+const getIdTokenInHeader = (req: Request) => {
   let idToken = '';
   if (
     req.headers.authorization &&
@@ -12,59 +13,33 @@ const getIdToken = (req: Request) => {
     console.log('Found "Authorization" header');
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split('Bearer ')[1];
-  } else if (req.cookies) {
-    console.log('Found "__session" cookie');
-    // Read the ID Token from cookie.
-    idToken = req.cookies.__session;
   }
   return idToken;
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type CustomReqType = Request & { user: admin.auth.DecodedIdToken };
-app.get('/', async (req: Request, res, next) => {
+app.use(async (req: Request, res, next) => {
   console.log('Check if request is authorized with Firebase ID token');
-  const idToken = getIdToken(req);
+  const idToken = getIdTokenInHeader(req);
   if (!idToken) {
-    console.error(
-      'No Firebase ID token was passed as a Bearer token in the Authorization header.',
-      'Make sure you authorize your request by providing the following HTTP header:',
-      'Authorization: Bearer <Firebase ID Token>',
-      'or by passing a "__session" cookie.',
-    );
-    res.status(403).send('Unauthorized-1');
+    res.status(403).send('Authorization ヘッダがありません');
     return;
   }
-
-  try {
-    console.log('id-token:' + idToken);
-    const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log('ID Token correctly decoded', decodedIdToken);
-    (req as CustomReqType).user = decodedIdToken;
-    res.cookie('__session', idToken);
-    next();
-    return;
-  } catch (error) {
-    console.error('Error while verifying Firebase ID token:', error);
-    res.status(403).send('Unauthorized-2');
-    return;
-  }
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(decodedIdToken => {
+      console.log('verified id token');
+      (req as CustomReqType).user = {
+        displayName: decodedIdToken.email || '',
+        faceUrl: decodedIdToken.picture || '',
+      };
+      next();
+    })
+    .catch(error => {
+      console.error('Error while verifying Firebase ID token:', error);
+      res.status(403).send('id token の認証に失敗しました');
+      return;
+    });
 });
 
 export default app;
-
-// app.use((req, res, next) => {
-//   const sessionCookie = req.cookies.__session || '';
-//   admin
-//     .auth()
-//     .verifySessionCookie(sessionCookie, true)
-//     .then(() => {
-//       next();
-//     })
-//     .catch(() => {
-//       // Session cookie is unavailable or invalid. Force user to login.
-//       res.redirect('/login');
-//     });
-// });
-
-// export default app;

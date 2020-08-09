@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import ResizeObserver from 'resize-observer-polyfill';
 import styled from 'styled-components';
@@ -25,7 +25,7 @@ const createReservationRows = (
   element: HTMLDivElement | undefined,
   props: PropsType,
 ) => {
-  const beginDate = moment(props.date).hour(8).startOf('hour').toDate();
+  const beginDate = dayjs(props.date).hour(8).startOf('hour').toDate();
   const cellWidth = (element?.querySelector('.first') as HTMLElement)
     ?.offsetWidth;
   if (!cellWidth) return [];

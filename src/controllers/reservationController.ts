@@ -1,10 +1,9 @@
-import moment, { Moment } from 'moment';
-import superagent from 'superagent';
+import dayjs, { Dayjs } from 'dayjs';
 import IReservation from '../status/IReservation';
-
+import { getAgent } from './agent';
 export const getReservations = async (date: Date): Promise<IReservation[]> => {
-  const mDate = moment(date).startOf('day');
-  const result = await superagent
+  const mDate = dayjs(date).startOf('day');
+  const result = await getAgent()
     .get('/api/reservations/')
     .query({
       date: mDate.toISOString(),
@@ -17,17 +16,19 @@ export const getReservations = async (date: Date): Promise<IReservation[]> => {
 };
 
 export const getReservationById = async (id: string): Promise<IReservation> => {
-  const result = await superagent.get('/api/reservations/' + id).catch(e => {
-    console.error(e);
-    throw e;
-  });
+  const result = await getAgent()
+    .get('/api/reservations/' + id)
+    .catch(e => {
+      console.error(e);
+      throw e;
+    });
   return result.body as IReservation;
 };
 
 export const postReservation = async (
   data: IReservation,
 ): Promise<IReservation> => {
-  const result = await superagent
+  const result = await getAgent()
     .post('/api/reservations/')
     .send(data)
     .catch(e => {
@@ -40,7 +41,7 @@ export const postReservation = async (
 export const putReservation = async (
   data: Partial<IReservation>,
 ): Promise<IReservation> => {
-  const result = await superagent
+  const result = await getAgent()
     .put('/api/reservations/' + (data.id || ''))
     .send(data)
     .catch(e => {
@@ -51,12 +52,12 @@ export const putReservation = async (
 };
 
 export const deleteReservation = async (id: string): Promise<void> => {
-  await superagent.delete('/api/reservations/' + id);
+  await getAgent().delete('/api/reservations/' + id);
 };
 
 export const isVacant = async (
-  startDate: Moment,
-  endDate: Moment,
+  startDate: Dayjs,
+  endDate: Dayjs,
   facilityId: string,
   reservationId = '',
 ): Promise<boolean> => {

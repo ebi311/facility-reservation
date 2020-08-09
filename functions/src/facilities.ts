@@ -7,7 +7,8 @@ import {
 } from '@google-cloud/firestore';
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import IFacility from './status/IFacility';
+import IFacility from './models/IFacility';
+import { CustomReqType } from './CustomRequest';
 
 const firestore = new Firestore();
 
@@ -71,7 +72,7 @@ export const __private = {
     res.json(result);
   },
   post: async (req: Request, res: Response): Promise<void> => {
-    // const user = firebase.auth().currentUser;
+    const userId = (req as CustomReqType).user;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).send({ errors: errors.array() }).end();
@@ -80,10 +81,10 @@ export const __private = {
     const addData: IFacility = {
       ...req.body,
       system: {
-        createUser: '',
+        createUser: userId,
         createDate: now,
         lastUpdate: now,
-        lastUpdateUser: '',
+        lastUpdateUser: userId,
       },
     };
     const docRef = await firestore
@@ -99,7 +100,7 @@ export const __private = {
     res.send(doc.id).end();
   },
   put: async (req: Request<IdParamType>, res: Response): Promise<void> => {
-    // const user = firebase.auth().currentUser;
+    const userId = ((req as unknown) as CustomReqType).user;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).send({ errors: errors.array() }).end();
@@ -115,7 +116,7 @@ export const __private = {
       system: {
         ...oldData.system,
         lastUpdate: now,
-        lastUpdateUser: '',
+        lastUpdateUser: userId,
       },
     };
     const result = await docRef.set(newDate).catch(e => {

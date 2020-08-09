@@ -2,6 +2,8 @@
 // import * as firebase from 'firebase/app';
 // import 'firebase/auth';
 // import 'firebase/firestore';
+// import { initializeApp } from 'firebase';
+
 import { initializeApp } from 'firebase-admin';
 
 export const setupFirebase = (): void => {

@@ -29,6 +29,7 @@
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.3",
     "webpack": "^4.43.0",
@@ -37,15 +38,15 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@date-io/moment": "1",
+    "@date-io/dayjs": "^1",
     "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
     "connected-react-router": "^6.8.0",
+    "dayjs": "^1.8.31",
     "firebase": "^7.15.5",
     "history": "^4.10.1",
-    "moment": "^2.27.0",
     "polished": "^3.6.5",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
@@ -66,7 +67,7 @@
     "test": "jest",
     "fb-emu": "firebase emulators:start",
     "start": "webpack-dev-server --config webpack.dev.js --history-api-fallback",
-    "build": "webpack --config webpack.dev.js",
-    "build:watch": "webpack --config webpack.dev.js --watch"
+    "build": "rimraf ./public && yarn webpack --config webpack.dev.js",
+    "build:watch": "yarn build --watch"
   }
 }

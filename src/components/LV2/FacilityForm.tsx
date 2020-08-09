@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { deleteFacility, saveFacility } from '../../actions/facilityActions';
 import IFacility from '../../status/IFacility';
 import ActionBar from './ActionBar';
+import SystemForm from './SystemForm';
 
 type PropsType = {
   facility: IFacility;
@@ -68,6 +69,7 @@ const FacilityForm: React.FC<PropsType> = props => {
           control={control}
         />
       </Paragraph>
+      <SystemForm {...props.facility.system} />
       <ActionBar
         onSave={onSave}
         onDelete={onDelete}

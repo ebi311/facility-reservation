@@ -6,7 +6,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { KeyboardDateTimePicker } from '@material-ui/pickers';
-import moment, { Moment } from 'moment';
+import dayjs, { Dayjs } from 'dayjs';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FieldError } from 'react-hook-form/dist/types/form';
@@ -23,6 +23,7 @@ import { isVacant } from '../../controllers/reservationController';
 import IFacility from '../../status/IFacility';
 import IReservation from '../../status/IReservation';
 import ActionBar from './ActionBar';
+import SystemForm from './SystemForm';
 
 type PropsType = {
   reservation: IReservation;
@@ -46,10 +47,10 @@ const Paragraph = styled.div`
 const checkVacant = async (reservation: IReservation) => {
   const { id, startDate, endDate, facilityId } = reservation;
   // 最小時間は15分
-  if (endDate.diff(startDate, 'minutes') < 15)
+  if (endDate.diff(startDate, 'minute') < 15)
     return '終了日は開始日の15分以降にしてください。';
   // 終了日は、次の日の00:00まで
-  const limit = moment(startDate).add(1, 'day').startOf('day');
+  const limit = dayjs(startDate).add(1, 'day').startOf('day');
   if (endDate > limit) return '終了日は日をまたぐことはできません。';
   if (!facilityId) return false;
   const result = await isVacant(startDate, endDate, facilityId, id);
@@ -74,7 +75,7 @@ const save = async (
   }
 };
 
-type MomentErrorType = Moment & FieldError;
+type DayjsErrorType = Dayjs & FieldError;
 
 const ReservationForm: React.FC<PropsType> = props => {
   const { errors, control, reset, getValues, trigger } = useForm<IReservation>({
@@ -83,7 +84,7 @@ const ReservationForm: React.FC<PropsType> = props => {
   });
   const dispatch = useDispatch();
   const history = useHistory();
-  const startDate = getValues('startDate') as Moment;
+  const startDate = getValues('startDate') as Dayjs;
 
   const { reservation } = props;
   useEffect(() => {
@@ -128,7 +129,7 @@ const ReservationForm: React.FC<PropsType> = props => {
   ]);
 
   const maxMinDay = useMemo(() => {
-    return moment(startDate).startOf('day');
+    return dayjs(startDate).startOf('day');
   }, [startDate]);
 
   return (
@@ -172,8 +173,7 @@ const ReservationForm: React.FC<PropsType> = props => {
                 error={dateError}
                 helperText={
                   dateError
-                    ? ((errors.startDate as unknown) as MomentErrorType)
-                        ?.message
+                    ? ((errors.startDate as unknown) as DayjsErrorType)?.message
                     : ''
                 }
               />
@@ -231,6 +231,7 @@ const ReservationForm: React.FC<PropsType> = props => {
           control={control}
         />
       </Paragraph>
+      <SystemForm {...reservation.system} />
       <Paragraph>
         <ActionBar
           onSave={onSave}

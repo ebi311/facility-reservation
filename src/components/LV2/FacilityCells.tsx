@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import queryString from 'query-string';
 import React from 'react';
 import { useHistory } from 'react-router';
@@ -37,9 +37,9 @@ const FacilityCell: React.FC<PropsType> = props => {
     </LaneCell>,
   ];
   for (let i = 8; i < 19; i++) {
-    const d = moment(props.date).set('hour', i).startOf('hour');
+    const d = dayjs(props.date).set('hour', i).startOf('hour');
     const qs = queryString.stringify({
-      date: d.toISOString(true),
+      date: d.toISOString(),
       facilityId: facility.id,
     });
     cells.push(

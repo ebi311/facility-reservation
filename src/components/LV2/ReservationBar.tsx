@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { lighten } from 'polished';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router';
@@ -34,13 +34,13 @@ const Bar = styled.div<BarType>`
 `;
 
 const ReservationBar: React.FC<PropsType> = props => {
-  const endDate = moment(props.reservation.endDate);
-  const startDate = moment(props.reservation.startDate);
-  const startTime = moment(props.beginTime).startOf('hour');
-  const offsetTime = startDate.diff(startTime, 'minutes');
+  const endDate = dayjs(props.reservation.endDate);
+  const startDate = dayjs(props.reservation.startDate);
+  const startTime = dayjs(props.beginTime).startOf('hour');
+  const offsetTime = startDate.diff(startTime, 'minute');
   const offsetPixel =
     (offsetTime / 60) * props.timeWidth + constraints.rowHeaderWidth;
-  const diffTime = endDate.diff(startDate, 'minutes');
+  const diffTime = endDate.diff(startDate, 'minute');
   const width = (diffTime / 60) * props.timeWidth;
 
   const history = useHistory();

@@ -1,6 +1,6 @@
 import { DatePicker } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import React, { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
@@ -41,13 +41,12 @@ type PropsType = {
 const DayHeader: React.FC<PropsType> = props => {
   const [date, weekday, nextDay, prevDay] = useMemo(() => {
     const ret = [];
-    const m = moment(props.date);
-    const fm = moment(props.date);
+    const m = dayjs(props.date);
+    const fm = dayjs(props.date);
     ret.push(m);
     ret.push(m.format('dddd'));
     ret.push(fm.add(1, 'day').format('YYYY-MM-DD'));
-    // add は破壊的メソッドのため、1日追加されている。そのため、2日戻す
-    ret.push(fm.add(-2, 'day').format('YYYY-MM-DD'));
+    ret.push(fm.add(-1, 'day').format('YYYY-MM-DD'));
     return ret;
   }, [props.date]);
 

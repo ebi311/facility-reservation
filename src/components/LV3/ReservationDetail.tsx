@@ -1,6 +1,6 @@
 import { Container as ContainerOriginal } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import queryString from 'query-string';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import ReactLoading from 'react-loading';
@@ -43,12 +43,12 @@ const ReservationDetail: React.FC<PropsType> = props => {
     IReservation
   > => {
     const qs = queryString.parse(location.search);
+    const date = qs.date as string;
+    const facilityId = qs.facilityId as string;
     return {
-      startDate: qs.date ? moment(qs.date).startOf('hour') : undefined,
-      endDate: qs.date
-        ? moment(qs.date).add(1, 'hour').startOf('hour')
-        : undefined,
-      facilityId: qs.facilityId ? `facilities/${qs.facilityId}` : undefined,
+      startDate: date ? dayjs(date).startOf('hour') : undefined,
+      endDate: date ? dayjs(date).add(1, 'hour').startOf('hour') : undefined,
+      facilityId: qs.facilityId ? `facilities/${facilityId}` : undefined,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);

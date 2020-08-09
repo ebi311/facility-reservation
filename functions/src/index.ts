@@ -31,7 +31,7 @@ app.set('json replacer', (key: string, value: never) => {
 //     saveUninitialized: false,
 //   }),
 // );
-app.use('/api/auth/', auth);
+app.use(auth);
 app.use('/api/facilities/', facilities);
 app.use('/api/reservations/', reservations);
 app.get('/api/version/', (req, res) => {

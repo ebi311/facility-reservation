@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
   asyncProcessAction,
@@ -14,8 +14,8 @@ const init: IReservationPage = {
     facilityId: '',
     subject: '',
     description: '',
-    startDate: moment(),
-    endDate: moment(),
+    startDate: dayjs(),
+    endDate: dayjs(),
     system: createInitSystem(),
   },
   loading: false,

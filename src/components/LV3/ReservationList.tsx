@@ -1,6 +1,6 @@
-import { Portal, CircularProgress } from '@material-ui/core';
+import { CircularProgress, Portal } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import queryString from 'query-string';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -57,7 +57,8 @@ const ReservationList: React.FC = () => {
   // クエリパラメータから、表示日付を設定する
   useEffect(() => {
     const qs = queryString.parse(location.search);
-    const m = moment(qs.date).startOf('day');
+    const date = new Date(qs.date as string);
+    const m = dayjs(date).startOf('day');
     if (!qs.date || !m.isValid()) return;
     dispatch(changeDate(m.toDate()));
     // eslint-disable-next-line react-hooks/exhaustive-deps
