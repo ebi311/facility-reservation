@@ -3,5 +3,6 @@
     "files.eol": "\n",
     "cSpell.words": [
         "firestore"
-    ]
+    ],
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
