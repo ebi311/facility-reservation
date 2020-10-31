@@ -32,7 +32,7 @@ const SystemForm: React.FC<ISystem> = props => {
       </RowParagraph>
       <RowParagraph>
         <Paragraph>
-          <InputLabel>更新者者</InputLabel>
+          <InputLabel>更新者</InputLabel>
           <UserBadgeBox {...props.lastUpdateUser} />
         </Paragraph>
         <Paragraph>
