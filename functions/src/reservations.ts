@@ -35,17 +35,19 @@ const app = express();
 const collectionName = 'reservations';
 
 const converter: FirestoreDataConverter<IReservation> = {
-  fromFirestore: data => {
+  fromFirestore: docSnapshot => {
+    const data = docSnapshot.data() as IReservation<Timestamp>;
     const fromData = ({ ...data } as unknown) as IReservation;
-    fromData.startDate = dayjs((data.startDate as Timestamp).toDate());
-    fromData.endDate = dayjs((data.endDate as Timestamp).toDate());
+    fromData.startDate = dayjs(data.startDate.toDate());
+    fromData.endDate = dayjs(data.endDate.toDate());
     const system = fromData.system;
     system.createDate = dayjs((data.system.createDate as Timestamp).toDate());
     system.lastUpdate = dayjs((data.system.lastUpdate as Timestamp).toDate());
     return fromData as IReservation;
   },
-  toFirestore: obj => {
-    const toObj = ({ ...obj } as unknown) as IReservation;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  toFirestore: (obj: any) => {
+    const toObj = { ...obj };
     delete toObj.id;
     return toObj;
   },

@@ -21,12 +21,14 @@ const app = express();
 const collectionName = 'facilities';
 
 const converter: FirestoreDataConverter<IFacility> = {
-  fromFirestore: data => {
-    return data as IFacility;
+  fromFirestore: docSnapshot => {
+    return docSnapshot.data() as IFacility;
   },
-  toFirestore: obj => {
-    delete obj.id;
-    return obj;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  toFirestore: (obj: any) => {
+    const toObj = { ...obj };
+    delete toObj.id;
+    return toObj;
   },
 };
 

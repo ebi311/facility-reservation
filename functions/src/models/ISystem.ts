@@ -1,9 +1,9 @@
 import dayjs, { Dayjs } from 'dayjs';
 import IUser from './IUser';
 
-export default interface ISystem {
-  createDate: Dayjs | Date;
-  lastUpdate: Dayjs | Date;
+export default interface ISystem<T = Dayjs | Date> {
+  createDate: T;
+  lastUpdate: T;
   createUser: IUser;
   lastUpdateUser: IUser;
 }
