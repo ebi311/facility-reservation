@@ -1,8 +1,8 @@
-# [プログラミング学習用]施設予約アプリ 機能仕様書
+# [プログラミング学習用]設備予約アプリ 機能仕様書
 
 ## 概要
 
-本書は、[プログラミング学習用]施設予約アプリ における、機能ごとの仕様を記載したものである。
+本書は、[プログラミング学習用]設備予約アプリ における、機能ごとの仕様を記載したものである。
 
 ## 画面仕様
 
@@ -51,13 +51,13 @@ YYYY-MM-DD 形式と曜日とする。
 
 設備登録画面に遷移します。
 
-#### (E) 施設の一覧
+#### (E) 設備の一覧
 
-登録されている施設の一覧を表示する。
+登録されている設備の一覧を表示する。
 
 色は、8 色を定義しそれを順番に繰り返し利用する。
 
-施設が 1 件もない場合は、その旨のメッセージを表示する。
+設備が 1 件もない場合は、その旨のメッセージを表示する。
 
 #### (F) 設備名
 
@@ -65,11 +65,11 @@ YYYY-MM-DD 形式と曜日とする。
 
 ##### クリックイベント
 
-クリックした施設の詳細画面に遷移する。
+クリックした設備の詳細画面に遷移する。
 
 #### (G) 予約ライン
 
-レーンの施設の予約の時間範囲を表示する。
+レーンの設備の予約の時間範囲を表示する。
 
 ##### クリックイベント
 
@@ -77,7 +77,7 @@ YYYY-MM-DD 形式と曜日とする。
 
 #### (H) 時間フレーム
 
-施設の空き時間の枠
+設備の空き時間の枠
 
 ##### マウスオーバーイベント
 
@@ -87,9 +87,9 @@ YYYY-MM-DD 形式と曜日とする。
 
 予約の登録画面に遷移する。
 
-選択した施設、時間が初期設定されるようにする。
+選択した設備、時間が初期設定されるようにする。
 
-### 施設詳細表示、新規作成画面
+### 設備詳細表示、新規作成画面
 
 ![facility-detail](facility-detail.drawio.svg)
 
@@ -105,7 +105,7 @@ YYYY-MM-DD 形式と曜日とする。
 
 #### ページを開いた後のイベント
 
-パスパラメータに、ID が指定されている場合、その施設のデータをロードし、表示する。
+パスパラメータに、ID が指定されている場合、その設備のデータをロードし、表示する。
 
 #### (A) 設備名
 
@@ -129,7 +129,7 @@ YYYY-MM-DD 形式と曜日とする。
 
 #### (E) 削除（リンク）
 
-施設を削除するリンク
+設備を削除するリンク
 
 ##### クリックイベント
 
@@ -143,11 +143,11 @@ YYYY-MM-DD 形式と曜日とする。
 
 #### (F) 保存ボタン
 
-施設の情報を保存する。
+設備の情報を保存する。
 
 ##### クリックイベント
 
-施設予約 API をコールする。
+設備予約 API をコールする。
 
 成功した場合は、その旨のメッセージを表示て、予約一覧に戻る。
 
@@ -177,7 +177,7 @@ YYYY-MM-DD 形式と曜日とする。
 
 #### ページを開いた後のイベント
 
-パスパラメータに、ID が指定されている場合、その施設のデータをロードし、表示する。
+パスパラメータに、ID が指定されている場合、その設備のデータをロードし、表示する。
 
 #### (A) 設備
 
@@ -239,7 +239,7 @@ YYYY-MM-DD 形式と曜日とする。
 
 ## API（サーバー機能）
 
-### 新しい施設の登録
+### 新しい設備の登録
 
 #### メソッド
 
@@ -259,7 +259,7 @@ content-type: application/json
 
 | item name   | required | value          |
 | ----------- | :------: | -------------- |
-| name        |    ✔     | string: 施設名 |
+| name        |    ✔     | string: 設備名 |
 | description |          | string: 詳細   |
 
 #### レスポンス: 成功時
@@ -268,7 +268,7 @@ status: 200
 
 content-type: application/json
 
-登録後の[施設](./schemas.md#facility)のデータを返す。
+登録後の[設備](./schemas.md#facility)のデータを返す。
 
 #### レスポンス: インプット・エラー
 
@@ -284,7 +284,7 @@ content-type: application/json
 | message   | string            | エラーメッセージ |
 | errors    | ValidationError[] | エラーの一覧     |
 
-### 施設の更新
+### 設備の更新
 
 #### メソッド
 
@@ -298,7 +298,7 @@ PUT
 
 | item name | required | value                     |
 | --------- | :------: | ------------------------- |
-| id        |    ✔     | string: 更新する施設の ID |
+| id        |    ✔     | string: 更新する設備の ID |
 
 #### リクエスト・Body
 
@@ -306,7 +306,7 @@ content-type: application/json
 
 | item name   | required | value          |
 | ----------- | :------: | -------------- |
-| name        |          | string: 施設名 |
+| name        |          | string: 設備名 |
 | description |          | string: 詳細   |
 
 Body にない項目は更新されない。
@@ -317,9 +317,9 @@ status: 200
 
 content-type: application/json
 
-変更後の[施設](./schemas.md#facility)のデータを返す。
+変更後の[設備](./schemas.md#facility)のデータを返す。
 
-#### レスポンス: 指定した ID の施設がない
+#### レスポンス: 指定した ID の設備がない
 
 status: 404
 
@@ -337,7 +337,7 @@ content-type: application/json
 | message   | string            | エラーメッセージ |
 | errors    | ValidationError[] | エラーの一覧     |
 
-### 施設の削除
+### 設備の削除
 
 #### メソッド
 
@@ -351,19 +351,19 @@ DELETE
 
 | item name | required | value                     |
 | --------- | :------: | ------------------------- |
-| id        |    ✔     | string: 更新する施設の ID |
+| id        |    ✔     | string: 更新する設備の ID |
 
 #### レスポンス: 成功
 
 status code: 204
 
-#### レスポンス: 指定した ID の施設がない
+#### レスポンス: 指定した ID の設備がない
 
 status: 404
 
 body: なし
 
-### 施設の取得
+### 設備の取得
 
 #### メソッド
 
@@ -377,7 +377,7 @@ GET
 
 | item name | required | value                     |
 | --------- | :------: | ------------------------- |
-| id        |    ✔     | string: 更新する施設の ID |
+| id        |    ✔     | string: 更新する設備の ID |
 
 #### レスポンス: 成功
 
@@ -385,9 +385,9 @@ status: 200
 
 content-type: application/json
 
-[施設](./schemas.md#facility)のデータを返す。
+[設備](./schemas.md#facility)のデータを返す。
 
-#### レスポンス: 指定した ID の施設がない
+#### レスポンス: 指定した ID の設備がない
 
 status: 404
 
@@ -408,7 +408,7 @@ content-type: application/json
 | item name   | required | value          |
 | ----------- | :------: | -------------- |
 | subject     |    ✔     | string: 予約名 |
-| facilityId  |    ✔     | id: 施設 ID    |
+| facilityId  |    ✔     | id: 設備 ID    |
 | description |          | string: 詳細   |
 | startDate   |    ✔     | date: 開始日   |
 | endDate     |    ✔     | date: 終了日   |
@@ -456,7 +456,7 @@ content-type: application/json
 | item name   | required | value          |
 | ----------- | :------: | -------------- |
 | subject     |          | string: 予約名 |
-| facilityId  |          | id: 施設 ID    |
+| facilityId  |          | id: 設備 ID    |
 | description |          | string: 詳細   |
 | startDate   |          | date: 開始日   |
 | endDate     |          | date: 終了日   |
@@ -471,7 +471,7 @@ content-type: application/json
 
 更新後の[予約](./schemas.md#reservation)のデータを返す。
 
-#### レスポンス: 指定した ID の施設がない
+#### レスポンス: 指定した ID の設備がない
 
 status: 404
 
@@ -503,7 +503,7 @@ DELETE
 
 | item name | required | value                     |
 | --------- | :------: | ------------------------- |
-| id        |    ✔     | string: 更新する施設の ID |
+| id        |    ✔     | string: 更新する設備の ID |
 
 #### レスポンス: 成功
 
@@ -529,7 +529,7 @@ GET
 
 | item name | required | value                     |
 | --------- | :------: | ------------------------- |
-| id        |    ✔     | string: 更新する施設の ID |
+| id        |    ✔     | string: 更新する設備の ID |
 
 #### レスポンス: 成功
 
@@ -560,7 +560,7 @@ GET
 | item name   | required | value                                 |
 | ----------- | :------: | ------------------------------------- |
 | date        |    ✔     | date: 予約を取得する日付              |
-| facilityIds |          | string カンマ区切り: 施設の ID の一覧 |
+| facilityIds |          | string カンマ区切り: 設備の ID の一覧 |
 
 #### レスポンス: 成功
 
