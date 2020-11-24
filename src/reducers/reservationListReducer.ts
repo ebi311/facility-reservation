@@ -44,7 +44,7 @@ const taskListReducer = reducerWithInitialState<ITaskListPage>(init)
   .case(loadFacilityAction.failed, state => ({
     ...state,
     loading: false,
-    errorMessage: '施設の読み込みに失敗しました。',
+    errorMessage: '設備の読み込みに失敗しました。',
   }))
   .case(changeDate, (state, payload) => ({
     ...state,
