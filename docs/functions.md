@@ -247,7 +247,7 @@ POST
 
 #### URL
 
-/facilities/
+/api/facilities/
 
 #### クエリパラメータ
 
@@ -292,7 +292,7 @@ PUT
 
 #### URL
 
-/facilities/{id}
+/api/facilities/{id}
 
 #### パスパラメータ
 
@@ -345,7 +345,7 @@ DELETE
 
 #### URL
 
-/facilities/{id}
+/api/facilities/{id}
 
 #### パスパラメータ
 
@@ -371,7 +371,7 @@ GET
 
 #### URL
 
-/facilities/{id}
+/api/facilities/{id}
 
 #### パスパラメータ
 
@@ -399,7 +399,7 @@ POST
 
 #### URL
 
-/reservations/
+/api/reservations/
 
 #### リクエスト・Body
 
@@ -441,7 +441,7 @@ PUT
 
 #### URL
 
-/reservations/{id}
+/api/reservations/{id}
 
 #### パスパラメータ
 
@@ -497,7 +497,7 @@ DELETE
 
 #### URL
 
-/reservations/{id}
+/api/reservations/{id}
 
 #### パスパラメータ
 
@@ -553,7 +553,7 @@ GET
 
 #### URL
 
-/reservations/
+/api/reservations/
 
 #### クエリパラメータ
 
