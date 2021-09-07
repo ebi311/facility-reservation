@@ -1,0 +1,12 @@
+printWidth: 80 # 1行の最大行数
+tabWidth: 2 # インデントのスペースの数
+useTabs: false # インデントにタブを利用する(true)か、スペースを利用するか(false)
+semi: true # 文末のセミコロンを強制するか
+singleQuote: true # 文字列リテラルにシングル・クォートを利用するか
+quoteProps: as-needed # オブジェクト・リテラルのプロパティ名にクォーテーションを利用するか
+jsxSingleQuote: false # JSX のプロパティにシングル・クォートを利用するか
+trailingComma: all # 配列やオブジェクト・リテラルの末尾のカンマを強制するか
+bracketSpacing: true # 中かっこの中にスペースを入れるか
+jsxBracketSameLine: false # JSXの `>` の後ろに開業を入れるか
+arrowParens: always # Arrow演算子の引数を必ずかっこで括るか
+endOfLine: lf # 改行コードを指定する

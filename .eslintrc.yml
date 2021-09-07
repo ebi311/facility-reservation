@@ -1,0 +1,42 @@
+env:
+  browser: true
+  es2021: true
+  node: true
+extends:
+  - 'plugin:react/recommended'
+  - standard
+  - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:prettier/recommended'
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 12
+  sourceType: module
+plugins:
+  - react
+  - '@typescript-eslint'
+settings:
+  react:
+    version: detepted
+rules:
+  # 文末のセミコロンを強制する
+  semi:
+    - error
+    - always
+  # React でプロパティの型チェックを必須にしない（TypeScriptで型定義するため）
+  react/prop-types: off
+  # TypeScript で戻り値の宣言を必須にしない
+  '@typescript-eslint/explicit-function-return-type': off
+  # TypeScript で使用されていない変数や関数をエラーとする。
+  # ただし、"_" で始まる名前は対象外とする。
+  '@typescript-eslint/no-unused-vars':
+    - error
+    - argsIgnorePattern: '^_'
+      varsIgnorePattern: '^_'
+  prettier/prettier:
+    - error
+  # TypeScript での no-use-before-define を有効にする
+  no-use-before-define: off
+  "@typescript-eslint/no-use-before-define":
+    - error
