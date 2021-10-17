@@ -48,7 +48,7 @@ superagent.parse['application/json'] = (text: string) => {
 firebase.auth().onAuthStateChanged((user) => {
   ReactDom.render(
     <MuiPickersUtilsProvider utils={ExtendedUtils} locale="ja">
-      {!!user ? (
+      {user ? (
         <BrowserRouter>
           <Routing />
         </BrowserRouter>

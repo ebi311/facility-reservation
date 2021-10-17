@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { Firestore } from '@google-cloud/firestore';
 import { ISystem } from './models/ISystem';
 import { IFacility } from './models/IFacility';
@@ -10,36 +10,49 @@ const app = express();
 const firestore = new Firestore();
 const getCollection = () => firestore.collection('facilities');
 
-app.get('/', async (req, res, next) => {
-  const snapshot = await getCollection()
-    .get()
-    .catch((e) => {
+export const __private__ = {
+  getList: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<IFacility[] | void> => {
+    const snapshot = await getCollection()
+      .get()
+      .catch((e) => {
+        next(e);
+      });
+    if (!snapshot) return;
+    const facilities = snapshot.docs.map((doc) => {
+      const data = doc.data() as IFacility;
+      data.id = doc.id;
+      return data;
+    });
+    res.json(facilities);
+  },
+  getById: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<IFacility | void> => {
+    const id = req.params.id;
+    const docRef = getCollection().doc(id);
+    const snapshot = await docRef.get().catch((e) => {
       next(e);
     });
-  if (!snapshot) return;
-  const facilities = snapshot.docs.map((doc) => {
-    const data = doc.data() as IFacility;
-    data.id = doc.id;
-    return data;
-  });
-  res.json(facilities);
-});
+    if (!snapshot) return;
+    if (!snapshot.exists) {
+      res.status(404).send();
+      return;
+    }
+    const data = snapshot.data() as IFacility;
+    data.id = docRef.id;
+    res.json(data);
+  },
+};
 
-app.get('/:id', async (req, res, next) => {
-  const id = req.params.id;
-  const docRef = getCollection().doc(id);
-  const snapshot = await docRef.get().catch((e) => {
-    next(e);
-  });
-  if (!snapshot) return;
-  if (!snapshot.exists) {
-    res.status(404).send();
-    return;
-  }
-  const data = snapshot.data() as IFacility;
-  data.id = docRef.id;
-  res.json(data);
-});
+app.get('/', __private__.getList);
+
+app.get('/:id', __private__.getById);
 
 app.post(
   '/',

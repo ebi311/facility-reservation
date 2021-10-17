@@ -1,0 +1,289 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`新規の画面を開いたとき 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiContainer-root MuiContainer-maxWidthSm"
+  >
+    <div
+      class="MuiPaper-root makeStyles-paper-1 MuiPaper-elevation1 MuiPaper-rounded"
+    >
+      <div
+        class="MuiFormControl-root"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink Mui-focused Mui-focused"
+          data-shrink="true"
+          id="facility-label"
+        >
+          設備
+        </label>
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline Mui-focused Mui-focused MuiInputBase-formControl MuiInput-formControl"
+        >
+          <div
+            aria-expanded="true"
+            aria-haspopup="listbox"
+            aria-labelledby="facility-label"
+            class="MuiSelect-root MuiSelect-select MuiSelect-selectMenu MuiInputBase-input MuiInput-input"
+            role="button"
+            tabindex="0"
+          >
+            <span>
+              ​
+            </span>
+          </div>
+          <input
+            aria-hidden="true"
+            class="MuiSelect-nativeInput"
+            tabindex="-1"
+            value=""
+          />
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSelect-icon MuiSelect-iconOpen"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7 10l5 5 5-5z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        style="display: flex;"
+      >
+        <div
+          class="MuiFormControl-root MuiTextField-root"
+          format="YYYY/MM/DD HH:mm"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+            data-shrink="true"
+          >
+            開始日時
+          </label>
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input"
+              readonly=""
+              type="text"
+              value="2021/07/01 11:00"
+            />
+          </div>
+        </div>
+        <p>
+          ～
+        </p>
+        <div
+          class="MuiFormControl-root MuiTextField-root"
+          format="YYYY/MM/DD HH:mm"
+        >
+          <label
+            class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiFormLabel-filled"
+            data-shrink="true"
+          >
+            終了日時
+          </label>
+          <div
+            class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-formControl MuiInput-formControl"
+          >
+            <input
+              aria-invalid="false"
+              class="MuiInputBase-input MuiInput-input"
+              readonly=""
+              type="text"
+              value="2021/07/01 12:00"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink="false"
+        >
+          目的
+        </label>
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input"
+            name="subject"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink="false"
+        >
+          詳細
+        </label>
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-multiline MuiInput-multiline"
+        >
+          <textarea
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
+            name="description"
+            rows="1"
+            style="height: 0px; overflow: hidden;"
+          />
+          <textarea
+            aria-hidden="true"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
+            readonly=""
+            style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+            tabindex="-1"
+          />
+        </div>
+      </div>
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated MuiInputLabel-shrink"
+        data-shrink="true"
+      >
+        登録者
+      </label>
+      <div>
+        <div
+          class="MuiChip-root"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle MuiChip-avatar MuiAvatar-colorDefault"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiAvatar-fallback"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              />
+            </svg>
+          </div>
+          <span
+            class="MuiChip-label"
+          >
+            ebihara kenji
+          </span>
+        </div>
+        2021-07-01 11:00
+      </div>
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated MuiInputLabel-shrink"
+        data-shrink="true"
+      >
+        更新者
+      </label>
+      <div>
+        <div
+          class="MuiChip-root"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle MuiChip-avatar MuiAvatar-colorDefault"
+          >
+            <svg
+              aria-hidden="true"
+              class="MuiSvgIcon-root MuiAvatar-fallback"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+              />
+            </svg>
+          </div>
+          <span
+            class="MuiChip-label"
+          >
+            ebihara kenji
+          </span>
+        </div>
+        2021-07-01 11:00
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-text makeStyles-cancelButton-3"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              <span
+                class="MuiButton-startIcon MuiButton-iconSizeMedium"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"
+                  />
+                </svg>
+              </span>
+              削除
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+        <div
+          class="MuiGrid-root makeStyles-rightActions-2 MuiGrid-item MuiGrid-grid-xs-6"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              <span
+                class="MuiButton-startIcon MuiButton-iconSizeMedium"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                  />
+                </svg>
+              </span>
+              保存
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

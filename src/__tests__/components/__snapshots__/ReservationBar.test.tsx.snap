@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReservationBar 1`] = `
+<DocumentFragment>
+  <div
+    class="root-classname"
+  >
+    <div
+      class="bar-classname"
+    />
+  </div>
+</DocumentFragment>
+`;

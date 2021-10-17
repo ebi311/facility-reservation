@@ -82,16 +82,16 @@ const getColor = (n: number) => {
 
 type ActionType = 'ChangeDate' | 'NextDay' | 'PrevDay';
 
-type Action = {
+export type Action = {
   type: ActionType;
   payload?: Dayjs;
 };
 
-type StateType = {
+export type StateType = {
   currentDate: Dayjs;
 };
 
-const reducerProcesses: {
+export const reducerProcesses: {
   [type in ActionType]: (s: StateType, a: Action) => StateType;
 } = {
   ChangeDate: (s, a) => {
