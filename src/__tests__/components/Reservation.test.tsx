@@ -10,9 +10,12 @@ import MockDate from 'mockdate';
 import React from 'react';
 import { Reservation } from '../../components/Reservation';
 import { getFacilities } from '../../controllers/facilityController';
+import { getReservation } from '../../controllers/reservationController';
 import { IFacility } from '../../models/IFacility';
 import { IReservation } from '../../models/IReservation';
 import { IUser } from '../../models/IUser';
+import { useParams } from 'react-router-dom';
+import { mocked } from 'ts-jest/utils';
 
 MockDate.set(new Date('2021-07-01T11:00:00+0900'));
 
@@ -35,7 +38,7 @@ jest.mock('../../controllers/facilityController', () => ({
 }));
 
 jest.mock('../../controllers/reservationController', () => ({
-  getReservation: jest.fn().mockImplementation(
+  getReservation: jest.fn(
     async () =>
       ({
         id: 'r001',
@@ -60,16 +63,18 @@ jest.mock('../../controllers/reservationController', () => ({
         },
       } as IReservation),
   ),
-  postReservation: jest.fn().mockImplementation(async () => 'r999'),
-  putReservation: jest.fn().mockImplementation(async () => ({})),
+  postReservation: jest.fn(async () => 'r999'),
+  putReservation: jest.fn(async () => ({})),
 }));
 
 jest.mock('../../auth', () => ({
-  getCurrentUser: () =>
-    ({
-      displayName: 'ebihara kenji',
-      email: 'kenji@example.com',
-    } as IUser),
+  getCurrentUser: jest.fn(
+    () =>
+      ({
+        displayName: 'ebihara kenji',
+        email: 'kenji@example.com',
+      } as IUser),
+  ),
 }));
 
 let replace: jest.Mock;
@@ -98,4 +103,35 @@ test('新規の画面を開いたとき', async () => {
   expect(!!queryByText('設備001')).toBeTruthy();
   expect(!!queryByText('設備002')).toBeTruthy();
   expect(asFragment()).toMatchSnapshot();
+});
+
+test('既存の画面を開いたとき', async () => {
+  mocked(useParams).mockReturnValueOnce({ id: 'r001' });
+  const { asFragment, getByTestId, getByLabelText } = render(
+    <MuiPickersUtilsProvider utils={Utils}>
+      <Reservation />
+    </MuiPickersUtilsProvider>,
+  );
+  await waitFor(() => expect(getReservation).toBeCalledTimes(1));
+  expect(asFragment()).toMatchSnapshot();
+  const selectFacility = getByLabelText('設備') as HTMLDivElement;
+  expect(selectFacility.textContent).toBe('設備001');
+
+  const startDate = getByTestId('start-date').querySelector('input');
+  expect(startDate?.value).toBe('2021/07/01 10:00');
+
+  const endDate = getByTestId('end-date').querySelector('input');
+  expect(endDate?.value).toBe('2021/07/01 11:00');
+
+  const subject = getByTestId('subject').querySelector('input');
+  expect(subject?.value).toBe('予約1');
+
+  const description = getByTestId('description').querySelector('textarea');
+  expect(description?.value).toBe('r001-説明');
+
+  const create = getByTestId('create');
+  expect(create.textContent).toBe('ebihara kenji2021-07-01 08:00');
+
+  const update = getByTestId('update');
+  expect(update.textContent).toBe('ebihara kenji2021-07-01 09:00');
 });

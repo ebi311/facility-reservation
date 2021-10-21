@@ -142,6 +142,7 @@ export const Reservation: React.FC = () => {
             render={(data) => {
               return (
                 <DateTimePicker
+                  data-testid="start-date"
                   value={data.value}
                   onChange={data.onChange}
                   onBlur={data.onBlur}
@@ -160,6 +161,7 @@ export const Reservation: React.FC = () => {
             render={(data) => {
               return (
                 <DateTimePicker
+                  data-testid="end-date"
                   value={data.value}
                   onChange={data.onChange}
                   onBlur={data.onBlur}
@@ -178,6 +180,7 @@ export const Reservation: React.FC = () => {
           rules={{ required: true }}
           as={
             <TextField
+              data-testid="subject"
               label="目的"
               fullWidth
               error={!!errors.subject}
@@ -188,10 +191,18 @@ export const Reservation: React.FC = () => {
         <Controller
           control={control}
           name="description"
-          as={<TextField label="詳細" fullWidth multiline value="" />}
+          as={
+            <TextField
+              data-testid="description"
+              label="詳細"
+              fullWidth
+              multiline
+              value=""
+            />
+          }
         />
         <InputLabel shrink>登録者</InputLabel>
-        <div>
+        <div data-testid="create">
           <Chip
             label={system.createUser.displayName}
             avatar={<Avatar src={system.createUser.face} />}
@@ -199,7 +210,7 @@ export const Reservation: React.FC = () => {
           {dayjs(system.createDate).format('YYYY-MM-DD HH:mm')}
         </div>
         <InputLabel shrink>更新者</InputLabel>
-        <div>
+        <div data-testid="update">
           <Chip
             label={system.lastUpdateUser.displayName}
             avatar={<Avatar src={system.lastUpdateUser.face} />}
