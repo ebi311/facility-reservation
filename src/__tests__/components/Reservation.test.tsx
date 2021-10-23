@@ -10,7 +10,10 @@ import MockDate from 'mockdate';
 import React from 'react';
 import { Reservation } from '../../components/Reservation';
 import { getFacilities } from '../../controllers/facilityController';
-import { getReservation } from '../../controllers/reservationController';
+import {
+  getReservation,
+  postReservation,
+} from '../../controllers/reservationController';
 import { IFacility } from '../../models/IFacility';
 import { IReservation } from '../../models/IReservation';
 import { IUser } from '../../models/IUser';
@@ -86,7 +89,7 @@ jest.mock(
       useParams: jest.fn(() => ({ id: '' })),
       useHistory: () => {
         replace = jest.fn();
-        return replace;
+        return { replace };
       },
     } as any),
 );
@@ -134,4 +137,49 @@ test('既存の画面を開いたとき', async () => {
 
   const update = getByTestId('update');
   expect(update.textContent).toBe('ebihara kenji2021-07-01 09:00');
+});
+
+test('保存ボタンを押したとき', async () => {
+  const { getByText, getByTestId, getByLabelText, container } = render(
+    <MuiPickersUtilsProvider utils={Utils}>
+      <Reservation />
+    </MuiPickersUtilsProvider>,
+  );
+  await waitFor(() => expect(getFacilities).toBeCalledTimes(1));
+  const selectFacility = getByLabelText('設備');
+  fireEvent.mouseDown(selectFacility);
+  fireEvent.click(getByText('設備001'));
+  const subject = getByTestId('subject').querySelector(
+    'input',
+  ) as HTMLInputElement;
+  fireEvent.change(subject, { target: { value: '予約テスト' } });
+  const description = getByTestId('description').querySelector(
+    'textarea',
+  ) as HTMLTextAreaElement;
+  fireEvent.change(description, { target: { value: '説明' } });
+  const saveButton = getByText('保存');
+  fireEvent.click(saveButton);
+  await waitFor(() => expect(postReservation).toBeCalled());
+  expect(postReservation).toBeCalledWith({
+    id: '',
+    subject: '予約テスト',
+    description: '説明',
+    startDate: dayjs('2021-07-01T02:00:00.000Z'),
+    endDate: dayjs('2021-07-01T03:00:00.000Z'),
+    facilityId: 'f001',
+    system: {
+      createDate: new Date('2021-07-01T02:00:00.000Z'),
+      createUser: {
+        displayName: 'ebihara kenji',
+        email: 'kenji@example.com',
+        face: '',
+      },
+      lastUpdate: new Date('2021-07-01T02:00:00.000Z'),
+      lastUpdateUser: {
+        displayName: 'ebihara kenji',
+        email: 'kenji@example.com',
+        face: '',
+      },
+    },
+  });
 });
