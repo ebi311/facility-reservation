@@ -21,12 +21,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { getFacilities } from '../controllers/facilityController';
+import { getReservations } from '../controllers/reservationController';
 import { IFacility } from '../models/IFacility';
 import { IReservation } from '../models/IReservation';
 import { FacilityLane } from './FacilityLane';
 import { ReservationListHeader } from './ReservationListHeader';
-import { getFacilities } from '../controllers/facilityController';
-import { getReservations } from '../controllers/reservationController';
 
 const useStyles = makeStyles((theme) => ({
   lane: {
