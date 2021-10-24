@@ -102,21 +102,23 @@ test('新規の画面を開いたとき', async () => {
   );
   await waitFor(() => expect(getFacilities).toBeCalledTimes(1));
   const selectFacility = getByLabelText('設備');
+  // 設備の選択肢が正しく表示されているか
   fireEvent.mouseDown(selectFacility);
   expect(!!queryByText('設備001')).toBeTruthy();
   expect(!!queryByText('設備002')).toBeTruthy();
+  // スナップショットの確認
   expect(asFragment()).toMatchSnapshot();
 });
 
 test('既存の画面を開いたとき', async () => {
   mocked(useParams).mockReturnValueOnce({ id: 'r001' });
-  const { asFragment, getByTestId, getByLabelText } = render(
+  const { getByTestId, getByLabelText } = render(
     <MuiPickersUtilsProvider utils={Utils}>
       <Reservation />
     </MuiPickersUtilsProvider>,
   );
   await waitFor(() => expect(getReservation).toBeCalledTimes(1));
-  expect(asFragment()).toMatchSnapshot();
+  // 読み込んだデータが正しく表示されているか
   const selectFacility = getByLabelText('設備') as HTMLDivElement;
   expect(selectFacility.textContent).toBe('設備001');
 
@@ -140,26 +142,34 @@ test('既存の画面を開いたとき', async () => {
 });
 
 test('保存ボタンを押したとき', async () => {
-  const { getByText, getByTestId, getByLabelText, container } = render(
+  const { getByText, getByTestId, getByLabelText } = render(
     <MuiPickersUtilsProvider utils={Utils}>
       <Reservation />
     </MuiPickersUtilsProvider>,
   );
   await waitFor(() => expect(getFacilities).toBeCalledTimes(1));
+  // 必須項目を入力せずに 保存ボタン を押す
+  fireEvent.click(getByText('保存'));
+  // 保存関数が呼ばれないこと
+  expect(postReservation).not.toBeCalled();
+  // 設備を選択する
   const selectFacility = getByLabelText('設備');
   fireEvent.mouseDown(selectFacility);
   fireEvent.click(getByText('設備001'));
+  // 目的 のテキストボックスに入力する
   const subject = getByTestId('subject').querySelector(
     'input',
   ) as HTMLInputElement;
   fireEvent.change(subject, { target: { value: '予約テスト' } });
+  // 詳細 のテキストアリアに入力する
   const description = getByTestId('description').querySelector(
     'textarea',
   ) as HTMLTextAreaElement;
   fireEvent.change(description, { target: { value: '説明' } });
-  const saveButton = getByText('保存');
-  fireEvent.click(saveButton);
+  // 保存ボタンを押す
+  fireEvent.click(getByText('保存'));
   await waitFor(() => expect(postReservation).toBeCalled());
+  // 保存処理が正しい値で実行される
   expect(postReservation).toBeCalledWith({
     id: '',
     subject: '予約テスト',
