@@ -142,7 +142,8 @@ describe('Component', () => {
     const facilityLanes = getAllByTestId('facility-lane');
     expect(facilityLanes.length).toBe(2);
     // 設備レーンのコンポーネントに、適切な値が渡っているか
-    // 初期とロード後の2回レンダリングされるため、2行 x 2 回 呼ばれる
+    // 設備ロード後と予約ロード後の2回レンダリングされるため、2行 x 2 回 = 4回 呼ばれる
+    // 予約がロードされた 3,4 回目の値をチェックする。
     expect(FacilityLane).toHaveBeenNthCalledWith(
       3,
       expect.objectContaining({
