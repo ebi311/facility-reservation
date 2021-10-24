@@ -65,7 +65,7 @@ export const ReservationBar: React.FC<PropsType> = (props) => {
   const history = useHistory();
   const click = useCallback(() => {
     history.push('/reservation/' + reservation.id);
-  }, [reservation.id]);
+  }, [history, reservation.id]);
 
   return (
     <div className={style.root}>

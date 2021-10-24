@@ -113,9 +113,14 @@ type ContextType = {
 export const CurrentDateContext = createContext<ContextType>({} as ContextType);
 
 export const ReservationList: React.FC = () => {
+  const styles = useStyles();
+  // Context の設定
   const [state, dispatch] = useReducer(reducer, { currentDate: dayjs() });
+  // 設備の一覧
   const [facilities, setFacilities] = useState<IFacility[]>([]);
+  // 予約の一覧
   const [reservations, setReservations] = useState<IReservation[]>([]);
+  // 初期と日付変更時の設備と予約の読み込み
   useEffect(() => {
     getFacilities()
       .then((result) => {
@@ -127,21 +132,22 @@ export const ReservationList: React.FC = () => {
         setReservations(result);
       });
   }, [state.currentDate]);
-
+  // セル幅の取得
   const cell = useRef<HTMLDivElement>(null);
+  // 初期及びブラウザサイズ変更時に、セルの幅を取得し、保持する
   const [cellWidth, setCellWidth] = useState<number>(0);
-  const styles = useStyles();
   const onResize = useCallback(() => {
     if (!cell?.current) return;
     setCellWidth(cell.current.getBoundingClientRect().width);
   }, [cell]);
-  useEffect(onResize, [cell]);
+  useEffect(() => onResize(), [cell, onResize]);
   useEffect(() => {
     window.addEventListener('resize', onResize);
     return () => {
+      // 画面を離れる時に イベントハンドラを削除する
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [onResize]);
   const headerCells = useMemo(() => {
     const cells: JSX.Element[] = [];
     cells.push(
@@ -175,7 +181,7 @@ export const ReservationList: React.FC = () => {
         />
       );
     });
-  }, [styles.lane, cellWidth, facilities, reservations]);
+  }, [facilities, reservations, cellWidth, styles.lane, state.currentDate]);
   return (
     <div>
       <CurrentDateContext.Provider

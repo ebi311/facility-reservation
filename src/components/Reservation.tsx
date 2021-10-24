@@ -73,6 +73,7 @@ export const Reservation: React.FC = () => {
   const hour = useMemo(() => {
     const params = new URLSearchParams(window.location.search);
     return dayjs(params.get('date') || undefined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.location.search]);
   const { id } = useParams<{ id: string }>();
   const [reservation, setReservation] = useState(initReservation(hour));
@@ -91,7 +92,7 @@ export const Reservation: React.FC = () => {
       setReservation(result);
       reset(result);
     });
-  }, [id]);
+  }, [id, reset]);
   const facilityMenuItems = useMemo(() => {
     return facilities.map((f) => (
       <MenuItem key={f.id} value={f.id}>
@@ -114,7 +115,7 @@ export const Reservation: React.FC = () => {
       await putReservation(inputValue);
       window.location.reload();
     }
-  }, [id, reservation, trigger, getValues]);
+  }, [trigger, reservation, getValues, id, history]);
   return (
     <Container maxWidth="sm">
       <Paper className={style.paper} data-testid="container">

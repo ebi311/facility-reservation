@@ -52,7 +52,7 @@ export const FacilityLane: React.FC<Props> = (props) => {
       );
     }
     return r;
-  }, []);
+  }, [date]);
   const bars = useMemo(() => {
     return reservations.map((r) => {
       return (

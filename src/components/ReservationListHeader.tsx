@@ -43,10 +43,10 @@ export const ReservationListHeader: React.FC = () => {
   );
   const prevDate = useCallback(() => {
     dispatch({ type: 'PrevDay' });
-  }, []);
+  }, [dispatch]);
   const nextDate = useCallback(() => {
     dispatch({ type: 'NextDay' });
-  }, []);
+  }, [dispatch]);
   return (
     <div>
       <div className={styles.header}>

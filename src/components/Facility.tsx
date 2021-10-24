@@ -76,7 +76,7 @@ export const Facility: React.FC = () => {
       setFacility(result);
       reset(result);
     });
-  }, [id]);
+  }, [id, reset]);
 
   const history = useHistory();
   const onSave = useCallback(async () => {
@@ -92,7 +92,7 @@ export const Facility: React.FC = () => {
       await putFacility(inputValue);
       window.location.reload();
     }
-  }, [id, facility, trigger, getValues]);
+  }, [trigger, facility, getValues, id, history]);
 
   return (
     <Container maxWidth="sm" className={style.root}>
