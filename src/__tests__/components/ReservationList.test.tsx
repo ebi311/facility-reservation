@@ -14,7 +14,7 @@ import { getFacilities } from '../../controllers/facilityController';
 import { getReservations } from '../../controllers/reservationController';
 import { IFacility } from '../../models/IFacility';
 
-MockDate.set(new Date('2021-07-01T11:00:00+0900'));
+MockDate.set(new Date('2021-07-01T11:00:00+09:00'));
 
 jest.mock('../../controllers/facilityController.ts', () => ({
   getFacilities: jest.fn(
@@ -39,24 +39,24 @@ jest.mock('../../controllers/reservationController.ts', () => ({
       id: 'r001',
       subject: '予約1',
       description: 'r001-説明',
-      startDate: dayjs('2021-07-01T10:00:00+0900'),
-      endDate: dayjs('2021-07-01T11:00:00+0900'),
+      startDate: dayjs('2021-07-01T10:00:00+09:00'),
+      endDate: dayjs('2021-07-01T11:00:00+09:00'),
       facilityId: 'f001',
     },
     {
       id: 'r002',
       subject: '予約2',
       description: 'r002-説明',
-      startDate: dayjs('2021-07-01T14:00:00+0900'),
-      endDate: dayjs('2021-07-01T15:00:00+0900'),
+      startDate: dayjs('2021-07-01T14:00:00+09:00'),
+      endDate: dayjs('2021-07-01T15:00:00+09:00'),
       facilityId: 'f002',
     },
     {
       id: 'r003',
       subject: '予約3',
       description: 'r003-説明',
-      startDate: dayjs('2021-07-01T14:00:00+0900'),
-      endDate: dayjs('2021-07-01T15:00:00+0900'),
+      startDate: dayjs('2021-07-01T14:00:00+09:00'),
+      endDate: dayjs('2021-07-01T15:00:00+09:00'),
       facilityId: 'f001',
     },
   ]),
@@ -157,16 +157,16 @@ describe('Component', () => {
             id: 'r001',
             subject: '予約1',
             description: 'r001-説明',
-            startDate: dayjs('2021-07-01T10:00:00+0900'),
-            endDate: dayjs('2021-07-01T11:00:00+0900'),
+            startDate: dayjs('2021-07-01T10:00:00+09:00'),
+            endDate: dayjs('2021-07-01T11:00:00+09:00'),
             facilityId: 'f001',
           },
           {
             id: 'r003',
             subject: '予約3',
             description: 'r003-説明',
-            startDate: dayjs('2021-07-01T14:00:00+0900'),
-            endDate: dayjs('2021-07-01T15:00:00+0900'),
+            startDate: dayjs('2021-07-01T14:00:00+09:00'),
+            endDate: dayjs('2021-07-01T15:00:00+09:00'),
             facilityId: 'f001',
           },
         ],
@@ -186,8 +186,8 @@ describe('Component', () => {
             id: 'r002',
             subject: '予約2',
             description: 'r002-説明',
-            startDate: dayjs('2021-07-01T14:00:00+0900'),
-            endDate: dayjs('2021-07-01T15:00:00+0900'),
+            startDate: dayjs('2021-07-01T14:00:00+09:00'),
+            endDate: dayjs('2021-07-01T15:00:00+09:00'),
             facilityId: 'f002',
           },
         ],

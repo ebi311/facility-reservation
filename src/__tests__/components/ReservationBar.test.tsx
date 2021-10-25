@@ -23,8 +23,8 @@ jest.mock('@material-ui/core/styles', () => {
 
 const reservation: IReservation = {
   description: '',
-  endDate: dayjs('2021-07-01T10:00:00+0900'),
-  startDate: dayjs('2021-07-01T09:00:00+0900'),
+  endDate: dayjs('2021-07-01T10:00:00+09:00'),
+  startDate: dayjs('2021-07-01T09:00:00+09:00'),
   facilityId: 'f001',
   id: 'r001',
   subject: '予約1',

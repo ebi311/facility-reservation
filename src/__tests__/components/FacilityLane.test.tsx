@@ -31,8 +31,8 @@ const createReservations = (): IReservation[] => [
     id: 'r001',
     subject: '予約1',
     description: 'r001-説明',
-    startDate: dayjs('2021-07-01T10:00:00+0900'),
-    endDate: dayjs('2021-07-01T11:00:00+0900'),
+    startDate: dayjs('2021-07-01T10:00:00+09:00'),
+    endDate: dayjs('2021-07-01T11:00:00+09:00'),
     facilityId: 'f001',
     system: {} as any,
   },
@@ -40,8 +40,8 @@ const createReservations = (): IReservation[] => [
     id: 'r002',
     subject: '予約2',
     description: 'r002-説明',
-    startDate: dayjs('2021-07-01T14:00:00+0900'),
-    endDate: dayjs('2021-07-01T15:00:00+0900'),
+    startDate: dayjs('2021-07-01T14:00:00+09:00'),
+    endDate: dayjs('2021-07-01T15:00:00+09:00'),
     facilityId: 'f001',
     system: {} as any,
   },
@@ -54,7 +54,7 @@ test('初期表示', () => {
       cellWidth={200}
       facility={createFacility()}
       reservations={createReservations()}
-      date={dayjs('2021-07-01TT10:00:00+0900')}
+      date={dayjs('2021-07-01T10:00:00+09:00')}
     />,
   );
   // 予約の数だけ予約バーが表示されている
@@ -80,7 +80,7 @@ test('初期表示', () => {
     expect.objectContaining({
       className: 'timeCell',
       to: `/reservation/?date=${dayjs(
-        '2021-07-01TT08:00:00.000',
+        '2021-07-01T08:00:00.000',
       ).toISOString()}`,
     }),
     {},
@@ -90,7 +90,7 @@ test('初期表示', () => {
     expect.objectContaining({
       className: 'timeCell',
       to: `/reservation/?date=${dayjs(
-        '2021-07-01TT09:00:00.000',
+        '2021-07-01T09:00:00.000',
       ).toISOString()}`,
     }),
     {},

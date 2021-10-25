@@ -20,7 +20,7 @@ import { IUser } from '../../models/IUser';
 import { useParams } from 'react-router-dom';
 import { mocked } from 'ts-jest/utils';
 
-MockDate.set(new Date('2021-07-01T11:00:00+0900'));
+MockDate.set(new Date('2021-07-01T11:00:00+09:00'));
 
 jest.mock('../../controllers/facilityController', () => ({
   getFacilities: jest.fn().mockImplementation(
@@ -47,17 +47,17 @@ jest.mock('../../controllers/reservationController', () => ({
         id: 'r001',
         subject: '予約1',
         description: 'r001-説明',
-        startDate: dayjs('2021-07-01T10:00:00+0900'),
-        endDate: dayjs('2021-07-01T11:00:00+0900'),
+        startDate: dayjs('2021-07-01T10:00:00+09:00'),
+        endDate: dayjs('2021-07-01T11:00:00+09:00'),
         facilityId: 'f001',
         system: {
-          createDate: new Date('2021-07-01T08:00:00+0900'),
+          createDate: new Date('2021-07-01T08:00:00+09:00'),
           createUser: {
             displayName: 'ebihara kenji',
             email: 'ebihara@example.com',
             face: 'http://example.com/face.png',
           },
-          lastUpdate: new Date('2021-07-01T09:00:00+0900'),
+          lastUpdate: new Date('2021-07-01T09:00:00+09:00'),
           lastUpdateUser: {
             displayName: 'ebihara kenji',
             email: 'ebihara@example.com',
