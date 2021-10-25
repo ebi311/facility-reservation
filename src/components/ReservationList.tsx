@@ -128,7 +128,6 @@ export const ReservationList: React.FC = () => {
         return getReservations(state.currentDate);
       })
       .then((result) => {
-        console.log(result);
         setReservations(result);
       });
   }, [state.currentDate]);
