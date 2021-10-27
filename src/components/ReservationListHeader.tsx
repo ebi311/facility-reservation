@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
     alignItems: 'center',
   },
   startIcon: {
-    transform: 'rotate(180deg)',
+    // transform: 'rotate(180deg)',
   },
   date: {
     '& input': { fontSize: '2rem', margin: 0, textAlign: 'center' },
@@ -54,11 +54,12 @@ export const ReservationListHeader: React.FC = () => {
           <Button
             startIcon={<DoubleArrow className={styles.startIcon} />}
             onClick={prevDate}
+            data-testid="prev-button"
           >
             1日前
           </Button>
         </div>
-        <div>
+        <div data-testid="main-date">
           <DatePicker
             value={currentDate}
             className={styles.date}
@@ -68,7 +69,11 @@ export const ReservationListHeader: React.FC = () => {
           <p className={styles.weekday}>{currentDate.format('dddd')}</p>
         </div>
         <div>
-          <Button endIcon={<DoubleArrow />} onClick={nextDate}>
+          <Button
+            data-testid="next-button"
+            endIcon={<DoubleArrow />}
+            onClick={nextDate}
+          >
             1日後
           </Button>
         </div>
