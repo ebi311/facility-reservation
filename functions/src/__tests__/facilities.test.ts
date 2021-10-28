@@ -1,10 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { validationResult } from 'express-validator';
 import * as target from '../facilities';
-// import { validationResult } from 'express-validator';
+import { mocked } from 'ts-jest/utils';
+import mockdate from 'mockdate';
+
+const now = new Date();
+mockdate.set(now);
 
 const collection = {
   get: jest.fn(),
   doc: jest.fn(),
+  add: jest.fn(async () => ({
+    get: async () => ({
+      id: 'id-001',
+      name: 'test-name',
+      note: 'test-note',
+      system: {} as any,
+    }),
+  })),
 };
 
 jest.mock('@google-cloud/firestore', () => ({
@@ -13,12 +26,16 @@ jest.mock('@google-cloud/firestore', () => ({
   },
 }));
 
-// jest.mock('express-validator');
+jest.mock('express-validator', () => ({
+  ...jest.requireActual('express-validator'),
+  validationResult: jest.fn(),
+}));
 
 const getRequest = () => ({} as any);
 const getResponse = () =>
   ({
     json: jest.fn(),
+    status: jest.fn().mockReturnThis(),
   } as any);
 const getNext = () => jest.fn();
 
@@ -72,7 +89,7 @@ describe('GET: getList', () => {
 });
 
 describe('GET: /:id', () => {
-  test('success', async () => {
+  test('成功パターン', async () => {
     // モック
     req.params = { id: '001' };
     collection.doc.mockReturnValueOnce({
@@ -92,5 +109,36 @@ describe('GET: /:id', () => {
       id: '001',
       name: 'name001',
     });
+  });
+  test('例外パターン', async () => {
+    // モック
+    req.params = { id: '001' };
+    collection.doc.mockReturnValueOnce({
+      id: '001',
+      get: collection.get,
+    });
+    const error = new Error('test error');
+    collection.get.mockRejectedValueOnce(error);
+    // テスト実行
+    await target.__private__.getById(req, res, next);
+    expect(next).toBeCalledWith(error);
+    expect(res.json).not.toBeCalled();
+  });
+});
+
+describe('getList', () => {
+  test('成功', async () => {
+    mocked(validationResult).mockReturnValueOnce({
+      isEmpty: () => true,
+    } as any);
+    // テスト実行
+    req.body = {
+      id: '001',
+      name: 'test-name',
+      note: 'test-note',
+      system: {} as any,
+    };
+    await target.__private__.post(req, res, next);
+    expect(collection.add).toBeCalled();
   });
 });

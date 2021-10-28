@@ -15,7 +15,7 @@ export const __private__ = {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise<IFacility[] | void> => {
+  ): Promise<void> => {
     const snapshot = await getCollection()
       .get()
       .catch((e) => {
@@ -33,7 +33,7 @@ export const __private__ = {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise<IFacility | void> => {
+  ): Promise<void> => {
     const id = req.params.id;
     const docRef = getCollection().doc(id);
     const snapshot = await docRef.get().catch((e) => {
@@ -48,16 +48,11 @@ export const __private__ = {
     data.id = docRef.id;
     res.json(data);
   },
-};
-
-app.get('/', __private__.getList);
-
-app.get('/:id', __private__.getById);
-
-app.post(
-  '/',
-  [body('name').isString().trim().notEmpty(), body('note').isString()],
-  async (req: Request, res: Response) => {
+  post: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     const valid = validationResult(req);
     if (!valid.isEmpty()) {
       res.status(400).json({ errors: valid.array() });
@@ -77,11 +72,26 @@ app.post(
         lastUpdateUser: user,
       } as ISystem,
     };
-    const docRef = await getCollection().add(addData);
+    const docRef = await getCollection()
+      .add(addData)
+      .catch((e) => {
+        next(e);
+      });
+    if (!docRef) return;
     const snapshot = await docRef.get();
     res.json({ id: snapshot.id });
   },
-);
+};
+
+app.get('/', __private__.getList);
+
+app.get('/:id', __private__.getById);
+
+app.post('/', [
+  body('name').isString().trim().notEmpty(),
+  body('note').isString(),
+  __private__.post,
+]);
 
 app.put(
   '/:id',
