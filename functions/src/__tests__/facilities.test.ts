@@ -2,42 +2,7 @@
 import { validationResult } from 'express-validator';
 import * as target from '../facilities';
 import { mocked } from 'ts-jest/utils';
-import mockdate from 'mockdate';
-
-const now = new Date();
-mockdate.set(now);
-
-const collection = {
-  get: jest.fn(),
-  doc: jest.fn(),
-  add: jest.fn(async () => ({
-    get: async () => ({
-      id: 'id-001',
-      name: 'test-name',
-      note: 'test-note',
-      system: {} as any,
-    }),
-  })),
-};
-
-jest.mock('@google-cloud/firestore', () => ({
-  Firestore: class {
-    collection = () => collection;
-  },
-}));
-
-jest.mock('express-validator', () => ({
-  ...jest.requireActual('express-validator'),
-  validationResult: jest.fn(),
-}));
-
-const getRequest = () => ({} as any);
-const getResponse = () =>
-  ({
-    json: jest.fn(),
-    status: jest.fn().mockReturnThis(),
-  } as any);
-const getNext = () => jest.fn();
+import { collection, getNext, getRequest, getResponse, now } from './setup';
 
 let req: any, res: any, next: any;
 
@@ -45,6 +10,7 @@ beforeEach(() => {
   req = getRequest();
   res = getResponse();
   next = getNext();
+  jest.clearAllMocks();
 });
 
 describe('GET: getList', () => {
@@ -126,7 +92,7 @@ describe('GET: /:id', () => {
   });
 });
 
-describe('getList', () => {
+describe('add', () => {
   test('成功', async () => {
     mocked(validationResult).mockReturnValueOnce({
       isEmpty: () => true,
@@ -139,6 +105,122 @@ describe('getList', () => {
       system: {} as any,
     };
     await target.__private__.post(req, res, next);
-    expect(collection.add).toBeCalled();
+    expect(collection.add).toBeCalledWith({
+      name: 'test-name',
+      note: 'test-note',
+      system: {
+        createDate: now,
+        createUser: {
+          displayName: 'test user-001',
+          email: 'test.user001@example.com',
+        },
+        lastUpdate: now,
+        lastUpdateUser: {
+          displayName: 'test user-001',
+          email: 'test.user001@example.com',
+        },
+      },
+    });
+    expect(next).not.toBeCalled();
+    expect(res.json).toBeCalled();
+  });
+  test('例外発生', async () => {
+    mocked(validationResult).mockReturnValueOnce({
+      isEmpty: () => true,
+    } as any);
+    // テスト実行
+    req.body = {
+      id: '001',
+      name: 'test-name',
+      note: 'test-note',
+      system: {} as any,
+    };
+    const error = new Error('test error');
+    collection.add.mockRejectedValueOnce(error);
+    await target.__private__.post(req, res, next);
+    expect(next).toBeCalledWith(error);
+    expect(res.json).not.toBeCalled();
+  });
+});
+
+describe('update', () => {
+  test('成功パターン', async () => {
+    mocked(validationResult).mockReturnValueOnce({
+      isEmpty: () => true,
+    } as any);
+    collection.get.mockReturnValueOnce({
+      exists: true,
+      data: () => ({
+        name: 'name001',
+      }),
+    });
+    const update = jest.fn().mockResolvedValue('');
+    collection.doc.mockReturnValueOnce({
+      id: '001',
+      get: collection.get,
+      update,
+    });
+    // テスト実行
+    req.params = '001';
+    req.body = {
+      id: '001',
+      name: 'test-name',
+      note: 'test-note',
+      system: {} as any,
+    };
+    await target.__private__.put(req, res, next);
+    expect(update).toBeCalledWith({
+      name: 'test-name',
+      note: 'test-note',
+      system: {
+        lastUpdate: now,
+        lastUpdateUser: {
+          displayName: 'test user-001',
+          email: 'test.user001@example.com',
+        },
+      },
+    });
+    expect(res.status).toBeCalledWith(204);
+    expect(next).not.toBeCalledWith();
+  });
+  test('例外発生パターン', async () => {
+    mocked(validationResult).mockReturnValueOnce({
+      isEmpty: () => true,
+    } as any);
+    collection.get.mockReturnValueOnce({
+      exists: true,
+      data: () => ({
+        name: 'name001',
+      }),
+    });
+    const error = new Error('test error');
+    const update = jest.fn().mockRejectedValue(error);
+    collection.doc.mockReturnValueOnce({
+      id: '001',
+      get: collection.get,
+      update,
+    });
+    // テスト実行
+    req.params = '001';
+    req.body = {
+      id: '001',
+      name: 'test-name',
+      note: 'test-note',
+      system: {} as any,
+    };
+    await target.__private__.put(req, res, next);
+    expect(update).toBeCalledWith({
+      name: 'test-name',
+      note: 'test-note',
+      system: {
+        lastUpdate: now,
+        lastUpdateUser: {
+          displayName: 'test user-001',
+          email: 'test.user001@example.com',
+        },
+      },
+    });
+    expect(res.status).not.toBeCalled();
+    expect(next).toBeCalledWith(error);
   });
 });

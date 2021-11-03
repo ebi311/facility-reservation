@@ -81,26 +81,11 @@ export const __private__ = {
     const snapshot = await docRef.get();
     res.json({ id: snapshot.id });
   },
-};
-
-app.get('/', __private__.getList);
-
-app.get('/:id', __private__.getById);
-
-app.post('/', [
-  body('name').isString().trim().notEmpty(),
-  body('note').isString(),
-  __private__.post,
-]);
-
-app.put(
-  '/:id',
-  [
-    body('name').isString().trim().notEmpty(),
-    body('note').isString(),
-    param('id').notEmpty(),
-  ],
-  async (req: Request, res: Response) => {
+  put: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     const valid = validationResult(req);
     if (!valid.isEmpty()) {
       res.status(400).json({ errors: valid.array() });
@@ -128,10 +113,31 @@ app.put(
         lastUpdateUser: user,
       },
     };
-    docRef.update(newData);
-    res.status(204).send();
+    await docRef
+      .update(newData)
+      .then(() => {
+        res.status(204).send();
+      })
+      .catch((e) => next(e));
   },
-);
+};
+
+app.get('/', __private__.getList);
+
+app.get('/:id', __private__.getById);
+
+app.post('/', [
+  body('name').isString().trim().notEmpty(),
+  body('note').isString(),
+  __private__.post,
+]);
+
+app.put('/:id', [
+  body('name').isString().trim().notEmpty(),
+  body('note').isString(),
+  param('id').notEmpty(),
+  __private__.put,
+]);
 
 app.delete('/:id', async (req, res) => {
   const id = req.params.id;

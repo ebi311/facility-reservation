@@ -18,48 +18,6 @@ const getCollection = () => firestore.collection('reservations');
 
 const app = express();
 
-app.get('/', async (req, res, next) => {
-  const dateString = req.query.date as string;
-  const date = dayjs(dateString);
-  if (!date.isValid()) {
-    res.status(400).json({ message: 'date が必要です' });
-    return;
-  }
-  const begin = date.tz().startOf('day');
-  const end = date.tz().add(1, 'day').startOf('day');
-
-  const snapshot = await getCollection()
-    .where('startDate', '>=', begin.toDate())
-    .where('startDate', '<=', end.toDate())
-    .get()
-    .catch((e) => {
-      next(e);
-    });
-  if (!snapshot) return;
-  const reservations = snapshot.docs.map((doc) => {
-    const data = doc.data() as IReservation;
-    data.id = doc.id;
-    return data;
-  });
-  res.json(reservations);
-});
-
-app.get('/:id', async (req, res, next) => {
-  const id = req.params.id;
-  const docRef = getCollection().doc(id);
-  const snapshot = await docRef.get().catch((e) => {
-    next(e);
-  });
-  if (!snapshot) return;
-  if (!snapshot.exists) {
-    res.status(404).send();
-    return;
-  }
-  const data = snapshot.data() as IReservation;
-  data.id = docRef.id;
-  res.json(data);
-});
-
 // 日付型は JSON にないので、文字列で受け取り変換する必要がある。
 // これは、リクエストで受け取る 予約 JSON の型を定義している。
 type RequestReservation = Omit<IReservation, 'startDate' | 'endDate'> & {
@@ -91,15 +49,60 @@ const convertToDbType = (reqBody: RequestReservation): DbReservation => {
   };
 };
 
-app.post(
-  '/',
-  [
-    body('subject').isString().trim().notEmpty(),
-    body('description').isString(),
-    body('startDate').notEmpty().isISO8601(),
-    body('endDate').notEmpty().isISO8601(),
-  ],
-  async (req: Request, res: Response, next: NextFunction) => {
+export const __private__ = {
+  get: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const dateString = req.query.date as string;
+    const date = dayjs(dateString || 'NG');
+    if (!date.isValid()) {
+      res.status(400).json({ message: 'date が必要です' });
+      return;
+    }
+    const begin = date.tz().startOf('day');
+    const end = date.tz().add(1, 'day').startOf('day');
+
+    const snapshot = await getCollection()
+      .where('startDate', '>=', begin.toDate())
+      .where('startDate', '<=', end.toDate())
+      .get()
+      .catch((e) => {
+        next(e);
+      });
+    if (!snapshot) return;
+    const reservations = snapshot.docs.map((doc) => {
+      const data = doc.data() as IReservation;
+      data.id = doc.id;
+      return data;
+    });
+    res.json(reservations);
+  },
+  getById: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const id = req.params.id;
+    const docRef = getCollection().doc(id);
+    const snapshot = await docRef.get().catch((e) => {
+      next(e);
+    });
+    if (!snapshot) return;
+    if (!snapshot.exists) {
+      res.status(404).send();
+      return;
+    }
+    const data = snapshot.data() as IReservation;
+    data.id = docRef.id;
+    res.json(data);
+  },
+  post: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     const valid = validationResult(req);
     if (!valid.isEmpty()) {
       res.status(400).json({ errors: valid.array() });
@@ -129,18 +132,11 @@ app.post(
     if (!snapshot) return;
     res.json({ id: snapshot.id });
   },
-);
-
-app.put(
-  '/:id',
-  [
-    param('id').notEmpty(),
-    body('subject').isString().trim().notEmpty(),
-    body('description').isString(),
-    body('startDate').notEmpty().isISO8601(),
-    body('endDate').notEmpty().isISO8601(),
-  ],
-  async (req: Request, res: Response, next: NextFunction) => {
+  put: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
     const valid = validationResult(req);
     if (!valid.isEmpty()) {
       res.status(400).json({ errors: valid.array() });
@@ -174,8 +170,35 @@ app.put(
       next(e);
     });
     if (!result) return;
-    res.status(204).send().end();
+    res.status(204).send();
   },
+};
+
+app.get('/', __private__.get);
+
+app.get('/:id', __private__.getById);
+
+app.post(
+  '/',
+  [
+    body('subject').isString().trim().notEmpty(),
+    body('description').isString(),
+    body('startDate').notEmpty().isISO8601(),
+    body('endDate').notEmpty().isISO8601(),
+  ],
+  __private__.post,
+);
+
+app.put(
+  '/:id',
+  [
+    param('id').notEmpty(),
+    body('subject').isString().trim().notEmpty(),
+    body('description').isString(),
+    body('startDate').notEmpty().isISO8601(),
+    body('endDate').notEmpty().isISO8601(),
+  ],
+  __private__.put,
 );
 
 app.delete('/:id', async (req, res, next) => {
