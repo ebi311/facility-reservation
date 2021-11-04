@@ -177,19 +177,19 @@ describe('Post', () => {
 });
 
 describe('Put', () => {
+  // モック
+  const sendData = {
+    subject: '予約',
+    facilityId: 'f001',
+    startDate: '2021-07-01T15:00:00Z',
+    endDate: '2021-07-01T16:00:00Z',
+  };
   test('成功パターン', async () => {
-    // モック
-    const sendData = {
-      subject: '予約',
-      facilityId: 'f001',
-      startDate: '2021-07-01T15:00:00Z',
-      endDate: '2021-07-01T16:00:00Z',
-    };
     req.body = sendData;
     req.params = { id: '001' };
     // 更新前のデータ取得
     const resData = createFacility(1)[0];
-    const update = jest.fn(async () => true);
+    const update = jest.fn().mockResolvedValueOnce(true);
     mocked(collection.doc).mockReturnValueOnce({
       id: resData.id,
       update,
@@ -219,5 +219,59 @@ describe('Put', () => {
         },
       },
     });
+  });
+  test('例外発生パターン', async () => {
+    req.body = sendData;
+    req.params = { id: '001' };
+    const resData = createFacility(1)[0];
+    const error = new Error('test error');
+    const update = jest.fn().mockRejectedValueOnce(error);
+    mocked(collection.doc).mockReturnValueOnce({
+      id: resData.id,
+      update,
+      get: async () => ({
+        exists: true,
+        data: resData.data,
+      }),
+    });
+    await target.__private__.put(req, res, next);
+    expect(next).toBeCalledWith(error);
+    expect(res.status).not.toBeCalled();
+  });
+  test('更新データが見つからないパターン', async () => {
+    req.body = sendData;
+    req.params = { id: '001' };
+    mocked(collection.doc).mockReturnValueOnce({
+      id: null,
+      get: async () => ({
+        exists: false,
+      }),
+    });
+    await target.__private__.put(req, res, next);
+    expect(res.status).toBeCalledWith(404);
+    expect(res.status).toBeCalledTimes(1);
+  });
+});
+
+describe('delete', () => {
+  test('成功パターン', async () => {
+    req.params = { id: '001' };
+    const deleteFn = jest.fn().mockResolvedValueOnce({});
+    mocked(collection.doc).mockReturnValueOnce({
+      delete: deleteFn,
+    });
+    await target.__private__.delete(req, res, next);
+    expect(res.status).toBeCalledWith(204);
+  });
+  test('例外発生パターン', async () => {
+    req.params = { id: '001' };
+    const error = new Error('test error');
+    const deleteFn = jest.fn().mockRejectedValueOnce(error);
+    mocked(collection.doc).mockReturnValueOnce({
+      delete: deleteFn,
+    });
+    await target.__private__.delete(req, res, next);
+    expect(next).toBeCalledWith(error);
+    expect(res.status).not.toBeCalled();
   });
 });

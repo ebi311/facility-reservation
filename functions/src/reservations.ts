@@ -172,6 +172,19 @@ export const __private__ = {
     if (!result) return;
     res.status(204).send();
   },
+  delete: async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const id = req.params.id;
+    const docRef = getCollection().doc(id);
+    const result = await docRef.delete().catch((e) => {
+      next(e);
+    });
+    if (!result) return;
+    res.status(204).send();
+  },
 };
 
 app.get('/', __private__.get);
@@ -201,14 +214,6 @@ app.put(
   __private__.put,
 );
 
-app.delete('/:id', async (req, res, next) => {
-  const id = req.params.id;
-  const docRef = getCollection().doc(id);
-  const result = await docRef.delete().catch((e) => {
-    next(e);
-  });
-  if (!result) return;
-  res.status(204).send();
-});
+app.delete('/:id', __private__.delete);
 
 export default app;
