@@ -18,6 +18,7 @@ import {
   getFacility,
   postFacility,
   putFacility,
+  deleteFacility,
 } from '../controllers/facilityController';
 import { IFacility } from '../models/IFacility';
 
@@ -94,6 +95,11 @@ export const Facility: React.FC = () => {
     }
   }, [trigger, facility, getValues, id, history]);
 
+  const onDelete = useCallback(async () => {
+    if (!id) return;
+    await deleteFacility(id);
+    history.push('/');
+  }, [history, id]);
   return (
     <Container maxWidth="sm" className={style.root}>
       <Paper className={style.paper}>
@@ -103,6 +109,7 @@ export const Facility: React.FC = () => {
           rules={{ required: true }}
           as={
             <TextField
+              data-testid="facility-name"
               label="設備名"
               fullWidth
               error={!!errors.name}
@@ -113,32 +120,48 @@ export const Facility: React.FC = () => {
         <Controller
           control={control}
           name="note"
-          as={<TextField label="詳細" fullWidth multiline value="" />}
+          as={
+            <TextField
+              data-testid="note"
+              label="詳細"
+              fullWidth
+              multiline
+              value=""
+            />
+          }
         />
         <InputLabel shrink>登録者</InputLabel>
-        <p>
+        <div data-testid="create">
           <Chip
             label={system.createUser.displayName}
             avatar={<Avatar src={system.createUser.face} />}
           />
           {dayjs(system.createDate).format('YYYY-MM-DD HH:mm')}
-        </p>
+        </div>
         <InputLabel shrink>更新者</InputLabel>
-        <p>
+        <div data-testid="update">
           <Chip
             label={system.lastUpdateUser.displayName}
             avatar={<Avatar src={system.lastUpdateUser.face} />}
           />
           {dayjs(system.lastUpdate).format('YYYY-MM-DD HH:mm')}
-        </p>
+        </div>
         <Grid container>
           <Grid item xs={6}>
-            <Button className={style.cancelButton} startIcon={<DeleteIcon />}>
-              削除
-            </Button>
+            {id ? (
+              <Button
+                data-testid="delete-button"
+                onClick={onDelete}
+                className={style.cancelButton}
+                startIcon={<DeleteIcon />}
+              >
+                削除
+              </Button>
+            ) : null}
           </Grid>
           <Grid item xs={6} className={style.rightActions}>
             <Button
+              data-testid="save-button"
               variant="contained"
               color="primary"
               startIcon={<DoneIcon />}

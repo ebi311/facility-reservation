@@ -1,0 +1,161 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`初期表示 新規作成表示 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiContainer-root makeStyles-root-1 MuiContainer-maxWidthSm"
+  >
+    <div
+      class="MuiPaper-root makeStyles-paper-2 MuiPaper-elevation1 MuiPaper-rounded"
+    >
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+        data-testid="facility-name"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink="false"
+        >
+          設備名
+        </label>
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
+        >
+          <input
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input"
+            name="name"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+        data-testid="note"
+      >
+        <label
+          class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+          data-shrink="false"
+        >
+          詳細
+        </label>
+        <div
+          class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-multiline MuiInput-multiline"
+        >
+          <textarea
+            aria-invalid="false"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
+            name="note"
+            rows="1"
+            style="height: 0px; overflow: hidden;"
+          />
+          <textarea
+            aria-hidden="true"
+            class="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
+            readonly=""
+            style="visibility: hidden; position: absolute; overflow: hidden; height: 0px; top: 0px; left: 0px; transform: translateZ(0); width: 100%;"
+            tabindex="-1"
+          />
+        </div>
+      </div>
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated MuiInputLabel-shrink"
+        data-shrink="true"
+      >
+        登録者
+      </label>
+      <div
+        data-testid="create"
+      >
+        <div
+          class="MuiChip-root"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle MuiChip-avatar"
+          >
+            <img
+              class="MuiAvatar-img"
+              src="https://example.com/face/001"
+            />
+          </div>
+          <span
+            class="MuiChip-label"
+          >
+            test001
+          </span>
+        </div>
+        2021-07-01 00:00
+      </div>
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated MuiInputLabel-shrink"
+        data-shrink="true"
+      >
+        更新者
+      </label>
+      <div
+        data-testid="update"
+      >
+        <div
+          class="MuiChip-root"
+        >
+          <div
+            class="MuiAvatar-root MuiAvatar-circle MuiChip-avatar"
+          >
+            <img
+              class="MuiAvatar-img"
+              src="https://example.com/face/001"
+            />
+          </div>
+          <span
+            class="MuiChip-label"
+          >
+            test001
+          </span>
+        </div>
+        2021-07-01 00:00
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-6"
+        />
+        <div
+          class="MuiGrid-root makeStyles-rightActions-3 MuiGrid-item MuiGrid-grid-xs-6"
+        >
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary"
+            data-testid="save-button"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              <span
+                class="MuiButton-startIcon MuiButton-iconSizeMedium"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="MuiSvgIcon-root"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"
+                  />
+                </svg>
+              </span>
+              保存
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
